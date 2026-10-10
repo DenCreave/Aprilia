@@ -1,0 +1,5 @@
+﻿<Solution>
+  <Project Path="Aprilia.Browser/Aprilia.Browser.csproj" />
+  <Project Path="Aprilia.Desktop/Aprilia.Desktop.csproj" />
+  <Project Path="Aprilia/Aprilia.csproj" />
+</Solution>
