@@ -8,5 +8,5 @@
         x:Class="Aprilia.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Aprilia">
-        <views:MainView />
+        <views:InitView />
 </Window>

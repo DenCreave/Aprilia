@@ -1,12 +1,10 @@
-
-using Avalonia;
 using Avalonia.Controls;
 
 namespace Aprilia.Views;
 
-public partial class MainView : UserControl
+public partial class LandingCVView : UserControl
 {
-    public MainView()
+    public LandingCVView()
     {
         InitializeComponent();
     }

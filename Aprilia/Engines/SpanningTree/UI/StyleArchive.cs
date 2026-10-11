@@ -1,11 +1,8 @@
-//using Aprilia.Engines.SpanningTree.UI.Eye;
+using Aprilia.Engines.SpanningTree.UI.Entropy;
 
 namespace Aprilia.Engines.SpanningTree.UI;
 
-public sealed class StyleArchive(/*EyeStyle eyeStyle*/)
+public sealed class StyleArchive(EntropyStyle entropyStyle)
 {
-    //public EyeStyle EyeStyle { get; } = eyeStyle;
-
-    //todo brushes pens and colors come here
-
+    public EntropyStyle EntropyStyle { get; } = entropyStyle;
 }

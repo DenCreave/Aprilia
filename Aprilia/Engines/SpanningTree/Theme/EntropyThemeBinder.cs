@@ -26,14 +26,16 @@ public class EntropyThemeBinder: IThemeBinder
         int dotCount = 300;
     
         var particleMap = (GenericParticle)_mapLoader.Maps.First(x => x.Group == ThemeGroup.Generic && x.Name == DMName.Particle);
-        var entropyLayer = (EntropyTL)_layerLoader.CreateNewLayer(ThemeGroup.Entropy, TLName.Entropy);
         particleMap.Configure(x => x.DotLimit = dotCount);
         
         int[] primeBasesX = { 2, 5, 11, 17 };
-        int[] primeBasesY = { 3, 7, 3, 13 };
+        int[] primeBasesY = { 3, 7, 3, 13 }; // Your preferred bases
 
         for (int i = 0; i < primeBasesX.Length; i++)
         {
+            // THE FIX: Create a brand new physics engine for THIS specific layer
+            var entropyLayer = (EntropyTL)_layerLoader.CreateNewLayer(ThemeGroup.Entropy, TLName.Entropy);
+
             tmp.Add(new Animap() 
             {
                 TorrentLayer = entropyLayer.Configure(x => 

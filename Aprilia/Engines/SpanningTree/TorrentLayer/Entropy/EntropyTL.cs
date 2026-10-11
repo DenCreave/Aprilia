@@ -50,8 +50,7 @@ public class EntropyTL : ITorrentLayer<EntropyProperties>
 
     public void Spawn(Vertex vertex)
     {
-        // --- THE HASH TRICK (Zero-GC Pseudo-Randomness) ---
-        // Scrambles the Halton index so the dots don't form visible ribbons
+        // 1. STARTING POSITION (Keep Halton here so the dots don't clump together)
         uint id = (uint)vertex.ID;
         uint hashX = id * 2654435761u;
         uint hashY = id * 2246822519u;
@@ -59,24 +58,29 @@ public class EntropyTL : ITorrentLayer<EntropyProperties>
         int indexX = (int)(hashX % (uint)UniqueProps.Noise.HaltonValuesX.Length);
         int indexY = (int)(hashY % (uint)UniqueProps.Noise.HaltonValuesY.Length);
 
-        // 1. RANDOM STARTING POSITION (Using ResNote)
         vertex.Cox = UniqueProps.Noise.HaltonValuesX[indexX] * ResolutionNote.X;
         vertex.Coy = UniqueProps.Noise.HaltonValuesY[indexY] * ResolutionNote.Y;
 
-        // 2. CALCULATE THE ANGLE (0.0 to 1.0) * (2 * PI)
-        double angleInRadians = UniqueProps.Noise.HaltonValuesX[indexX] * (Math.PI * 2);
+        // 2. TRUE RANDOM ANGLE & SPEED (Seeded by Layer Signature)
+        // By using BaseX and BaseY in the seed, every layer gets a completely unique set of random numbers.
+        int layerSignature = (UniqueProps.Noise.BaseX * 100) + (UniqueProps.Noise.BaseY * 10);
+        int seed = vertex.ID + layerSignature;
+        
+        Random rand = new Random(seed);
+        
+        // Random angle between 0 and 360 degrees (in radians)
+        double angleInRadians = rand.NextDouble() * (Math.PI * 2);
 
         // 3. CONVERT ANGLE TO X/Y VECTORS
         vertex.Vex = Math.Cos(angleInRadians);
         vertex.Vey = Math.Sin(angleInRadians);
 
-        // 4. VARY THE SPEED
-        double speedModifier = 0.5 + UniqueProps.Noise.HaltonValuesY[indexY];
+        // 4. VARY THE SPEED (Random multiplier between 0.5x and 1.5x)
+        double speedModifier = 0.5 + rand.NextDouble();
         vertex.Speed = UniqueProps.FlowSpeed * speedModifier;
 
         vertex.IsEnabled = true;
     }
-
     public void AffectVector(Vertex vertex)
     {
         if (!vertex.IsEnabled)

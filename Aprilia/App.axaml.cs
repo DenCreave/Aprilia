@@ -5,6 +5,9 @@ using Aprilia.Engines.SpanningTree.DotMap;
 using Aprilia.Engines.SpanningTree.Theme;
 using Aprilia.Engines.SpanningTree.TorrentLayer;
 using Aprilia.Engines.SpanningTree.UI;
+using Aprilia.Engines.SpanningTree.UI.Entropy;
+using Aprilia.Models;
+using Aprilia.Services;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -36,45 +39,33 @@ public partial class App : Application
         services.AddSingleton<StyleArchive>();
         services.AddSingleton<UIThemeLoader>();
         services.AddSingleton<SpanningTreeTheme>();
-        
-        
-       /* // Services || Controllers
+        services.AddSingleton<CameraState>();
+        services.AddSingleton<EntropyStyle>();
         services.AddSingleton<NavigationService>();
-
-
-        services.AddSingleton<InitViewModel>();
-        //views (their models)
-        services.AddTransient<ClockViewModel>();
-        services.AddTransient<AlarmViewModel>();
-        services.AddTransient<MusicViewModel>();
-        services.AddTransient<STCViewModel>();
         
+        
+        //views (their models)
+        services.AddSingleton<InitViewModel>();
+        services.AddTransient<LandingCVViewModel>();
         
         Services = services.BuildServiceProvider();
-        
-        
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            var initViewModel = Services.GetRequiredService<InitViewModel>();
-
-            desktop.MainWindow = new InitView();
-        }
-        */
+        var navigator = Services.GetRequiredService<NavigationService>();
+        navigator.NavigateTo<LandingCVViewModel>();
        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // If running on Linux/Windows Desktop
+            // Linux/Windows Desktop
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel()
+                DataContext = Services.GetRequiredService<InitViewModel>()
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            // If running in WebAssembly (Browser) or Mobile
-            singleViewPlatform.MainView = new MainView
+            // webassembly
+            singleViewPlatform.MainView = new InitView
             {
-                DataContext = new MainViewModel()
+                DataContext = Services.GetRequiredService<InitViewModel>()
             };
         }
 

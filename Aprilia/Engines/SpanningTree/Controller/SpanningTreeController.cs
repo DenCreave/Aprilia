@@ -19,7 +19,7 @@ public sealed class SpanningTreeController
         _restartRequested = false;
         _loadNextTheme = false;
         _frameTimer = Stopwatch.StartNew(); 
-        CurrentTheme = ThemeGroup.Eye;
+        CurrentTheme = ThemeGroup.Entropy;
         CurrentScene = themeBinderLoader.ThemeDict[CurrentTheme].ElicitateAnimap();
     }
 
