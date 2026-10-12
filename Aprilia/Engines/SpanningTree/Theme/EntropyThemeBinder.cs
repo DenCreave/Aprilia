@@ -23,7 +23,7 @@ public class EntropyThemeBinder: IThemeBinder
     public Animap[] ElicitateAnimap()
     {
         List<Animap> tmp = new();
-        int dotCount = 300;
+        int dotCount = 30;
     
         var particleMap = (GenericParticle)_mapLoader.Maps.First(x => x.Group == ThemeGroup.Generic && x.Name == DMName.Particle);
         particleMap.Configure(x => x.DotLimit = dotCount);

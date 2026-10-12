@@ -1,5 +1,6 @@
 using System;
 using Aprilia.Controllers;
+using Aprilia.Engines.Glance;
 using Aprilia.Engines.SpanningTree.Controller;
 using Aprilia.Engines.SpanningTree.DotMap;
 using Aprilia.Engines.SpanningTree.Theme;
@@ -42,6 +43,7 @@ public partial class App : Application
         services.AddSingleton<CameraState>();
         services.AddSingleton<EntropyStyle>();
         services.AddSingleton<NavigationService>();
+        services.AddSingleton<GlanceContentLoader>();
         
         
         //views (their models)
@@ -71,47 +73,4 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-#if DEBUG
-        this.AttachDeveloperTools();
-#endif
-    }
-
-    public override void OnFrameworkInitializationCompleted()
-    {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainViewModel()
-            };
-        }
-        else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
-        {
-            singleViewFactoryApplicationLifetime.MainViewFactory = () => new MainView { DataContext = new MainViewModel() };
-        }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-        {
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = new MainViewModel()
-            };
-        }
-
-        base.OnFrameworkInitializationCompleted();
-    }*/
 }
