@@ -1,15 +1,39 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Aprilia.ViewModels"
              xmlns:ui="clr-namespace:Aprilia.Engines.SpanningTree.UI"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content"
              x:Class="Aprilia.Views.LandingCVView"
              x:DataType="vm:LandingCVViewModel">
-    <Grid Background="Black">
+             
+    <Grid Background="Black" PointerWheelChanged="OnPointerWheelChanged" 
+          ScrollGesture="OnScrollGesture">
+        
+        <!-- Animated bg -->
         <Viewbox Stretch="UniformToFill">
-            <ui:SpanningTreeRenderer STC="{Binding Stc}" STT="{Binding Stt}" />
+            <ui:SpanningTreeRenderer Width="1920" Height="1080" STC="{Binding Stc}" STT="{Binding Stt}" />
         </Viewbox>
+        
+        <!-- Content stacker -->
+        <ItemsControl ItemsSource="{Binding ContentLoader.Pages}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid /> <!-- Stacks pages on top of each other -->
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
+            <ItemsControl.DataTemplates>
+                <DataTemplate DataType="{x:Type content:DummyContent}">
+                    <!-- Binds to the Opacity controlled by GlanceController! -->
+                    <Grid Opacity="{Binding PageOpacity}">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding Headline}" FontSize="50" Foreground="Cyan" FontWeight="Bold" />
+                            <TextBlock Text="{Binding BodyText}" FontSize="20" Foreground="White" Margin="0,20,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.DataTemplates>
+        </ItemsControl>
+        
     </Grid>
 </UserControl>

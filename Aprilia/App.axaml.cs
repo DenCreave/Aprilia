@@ -1,6 +1,7 @@
 using System;
 using Aprilia.Controllers;
 using Aprilia.Engines.Glance;
+using Aprilia.Engines.Mediator;
 using Aprilia.Engines.SpanningTree.Controller;
 using Aprilia.Engines.SpanningTree.DotMap;
 using Aprilia.Engines.SpanningTree.Theme;
@@ -43,8 +44,10 @@ public partial class App : Application
         services.AddSingleton<CameraState>();
         services.AddSingleton<EntropyStyle>();
         services.AddSingleton<NavigationService>();
+        services.AddSingleton<GlanceState>();
+        services.AddSingleton<GlanceController>();
         services.AddSingleton<GlanceContentLoader>();
-        
+        services.AddSingleton<TwinRenderMediator>();
         
         //views (their models)
         services.AddSingleton<InitViewModel>();

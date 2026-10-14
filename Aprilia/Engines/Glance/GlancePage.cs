@@ -5,5 +5,6 @@ public enum GlancePage
     Landing,
     AboutMe,
     Experience,
-    Portfolio
+    Portfolio,
+    Dummy
 }
