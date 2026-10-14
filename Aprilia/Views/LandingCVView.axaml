@@ -5,23 +5,19 @@
              xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content"
              x:Class="Aprilia.Views.LandingCVView"
              x:DataType="vm:LandingCVViewModel">
-             
-    <Grid Background="Black" PointerWheelChanged="OnPointerWheelChanged" 
-          ScrollGesture="OnScrollGesture">
-        
+
+    <Grid Background="Black" PointerWheelChanged="OnPointerWheelChanged" ScrollGesture="OnScrollGesture">
         <!-- Animated bg -->
-        <Viewbox Stretch="UniformToFill">
-            <ui:SpanningTreeRenderer Width="1920" Height="1080" STC="{Binding Stc}" STT="{Binding Stt}" />
-        </Viewbox>
-        
-        <!-- Content stacker -->
+        <ui:SpanningTreeRenderer STC="{Binding Stc}" STT="{Binding Stt}" />
+
+        <!-- Custom content stacker -->
         <ItemsControl ItemsSource="{Binding ContentLoader.Pages}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid /> <!-- Stacks pages on top of each other -->
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            
+
             <ItemsControl.DataTemplates>
                 <DataTemplate DataType="{x:Type content:DummyContent}">
                     <!-- Binds to the Opacity controlled by GlanceController! -->
@@ -34,6 +30,6 @@
                 </DataTemplate>
             </ItemsControl.DataTemplates>
         </ItemsControl>
-        
+
     </Grid>
 </UserControl>

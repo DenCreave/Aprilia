@@ -11,7 +11,7 @@ public class EntropyTL : ITorrentLayer<EntropyProperties>
 {
     public ThemeGroup Group => ThemeGroup.Entropy;
     public TLName Name => TLName.Entropy;
-    public ResNote ResolutionNote => new ResNote() { X = 1920, Y = 1080, Ratio = "16:9" };
+    public ResNote ResolutionNote { get; set; }
 
     
     public EntropyProperties UniqueProps { get; }
@@ -30,6 +30,7 @@ public class EntropyTL : ITorrentLayer<EntropyProperties>
         int dotCount = 900; // 300 dots * 3 layers.
         int baseX = 7;
         int baseY = 13;
+        ResolutionNote = new ResNote() { X = 1920, Y = 1080, Ratio = "16:9" };
         
         UniqueProps = new EntropyProperties()
         {

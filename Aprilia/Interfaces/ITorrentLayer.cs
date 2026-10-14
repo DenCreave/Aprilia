@@ -12,7 +12,7 @@ public interface ITorrentLayer
 {
     ThemeGroup Group { get; }
     TLName Name { get; } // dotmaps use the group then this to locate the TL
-    ResNote ResolutionNote { get; }
+    ResNote ResolutionNote { get; set; }
     AnimatrixController Controls { get; }
     RenderAlignment Align { get; }
     public bool IsAffecting { get; }

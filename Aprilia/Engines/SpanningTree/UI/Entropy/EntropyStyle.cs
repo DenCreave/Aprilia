@@ -23,16 +23,17 @@ public class EntropyStyle
         ResolutionNote = loader.CreateNewLayer(ThemeGroup.Entropy, TLName.Entropy).ResolutionNote;
         
         Color colorStart = Color.FromArgb(255, 255, 0, 144);  // Pink
-        Color colorEnd = Color.FromArgb(255, 255, 109, 61);   // Orange
+        Color colorEnd = Color.FromArgb(255, 255, 104, 10);   // Orange
 
         BGLayer = new LinearGradientBrush()
         {
-            StartPoint = new RelativePoint(0, ResolutionNote.Y, RelativeUnit.Absolute),
-            EndPoint = new RelativePoint(ResolutionNote.X, 0, RelativeUnit.Absolute),
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative), //top-left
+            EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative),//bottom-right
             Opacity = 0.8,
             GradientStops = new GradientStops
             {
                 new GradientStop(colorStart, 0.0),
+                
                 new GradientStop(colorEnd, 1.0),
             }
         };
