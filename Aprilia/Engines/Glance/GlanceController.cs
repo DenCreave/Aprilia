@@ -12,15 +12,16 @@ public sealed class GlanceController
     private readonly DispatcherTimer _physicsTimer;
     private DateTime _lastScrollTime;
     
-    // Dynamic Friction Variables
-    private double _currentTicks = 0;
+    // camera weight props
+    private double _targetTicks = 0;
+    private double _progressedTicks = 0;
+    
     private double _ticksRequired = 3.0; 
     private readonly int _baseCost = 3;
     private readonly int _penaltyCost = 5;
     
-    // phisics settings
     private readonly int _idleDecayDelayMs = 1500; 
-    private readonly double _decayRate = 0.1; // 10% per frame
+    private readonly double _decayRate = 0.1; 
 
     public GlanceController(GlanceState state, GlanceContentLoader contentLoader)
     {
@@ -36,20 +37,45 @@ public sealed class GlanceController
     public void HandleScroll(double deltaY)
     {
         _lastScrollTime = DateTime.Now;
-        
         var currentPage = _contentLoader.Pages[State.CurrentFocus];
 
         if (deltaY < 0 && !currentPage.IsAtBottom) return; 
         if (deltaY > 0 && !currentPage.IsAtTop) return;
+        
+        double tickAmount = -deltaY; 
+        _targetTicks += tickAmount;
+        if (State.CurrentFocus == 0 && _targetTicks < 0) _targetTicks = 0;
+        if (State.CurrentFocus == State.MaxPages - 1 && _targetTicks > 0) _targetTicks = 0;
+    }
 
-        double tickAmount = deltaY < 0 ? 1 : -1; 
-        _currentTicks += tickAmount;
+    private void OnPhysicsTick(object? sender, EventArgs e)
+    {
+        double idleMs = (DateTime.Now - _lastScrollTime).TotalMilliseconds;
+        bool isDecaying = idleMs > _idleDecayDelayMs;
 
-        if (State.CurrentFocus == 0 && _currentTicks < 0) _currentTicks = 0;
-        if (State.CurrentFocus == State.MaxPages - 1 && _currentTicks > 0) _currentTicks = 0;
+        // decay trigger
+        if (isDecaying)
+        {
+            _targetTicks = 0;           
+        }
 
-        State.StrainProgress = Math.Round(_currentTicks / _ticksRequired, 4);
 
+        double distance = _targetTicks - _progressedTicks;
+        
+        // If decaying, drift slowly (4%). If actively scrolling, move fast (15%).
+        double activeLerpRate = isDecaying ? 0.04 : 0.10;
+        if (Math.Abs(distance) < 0.03) 
+        {
+            _progressedTicks = _targetTicks;
+        }
+        else
+        {
+            _progressedTicks += distance * activeLerpRate; 
+        }
+
+        // 3. UPDATE STATE
+        State.StrainProgress = Math.Round(_progressedTicks / _ticksRequired, 4);
+        
         if (State.StrainProgress >= 1 && State.CurrentFocus < State.MaxPages - 1)
         {
             FlipPage(1);
@@ -59,12 +85,13 @@ public sealed class GlanceController
             FlipPage(-1);
         }
     }
-
+    
     private void FlipPage(int direction)
     {
         State.CurrentFocus += direction;
         
-        _currentTicks = 0;
+        _targetTicks = 0;
+        _progressedTicks = 0;
         State.StrainProgress = 0;
         _ticksRequired = _penaltyCost; 
 
@@ -72,27 +99,6 @@ public sealed class GlanceController
         {
             bool isCurrent = (i == State.CurrentFocus);
             _contentLoader.Pages[i].PageOpacity = isCurrent ? 1 : 0;
-        }
-    }
-
-    private void OnPhysicsTick(object? sender, EventArgs e)
-    {
-        double idleMs = (DateTime.Now - _lastScrollTime).TotalMilliseconds;
-
-        if (idleMs > _idleDecayDelayMs)
-        {
-            _ticksRequired = _baseCost;
-
-            if (Math.Abs(_currentTicks) > 0.05)
-            {
-                _currentTicks *= (1 - _decayRate); 
-                State.StrainProgress = Math.Round(_currentTicks / _ticksRequired, 4);
-            }
-            else if (_currentTicks != 0)
-            {
-                _currentTicks = 0;
-                State.StrainProgress = 0;
-            }
         }
     }
 }

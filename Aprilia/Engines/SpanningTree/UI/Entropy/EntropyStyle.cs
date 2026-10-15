@@ -12,6 +12,9 @@ public class EntropyStyle
     public ResNote ResolutionNote { get; }
     public LinearGradientBrush BGLayer { get; }
     public RadialGradientBrush[] GlowPalette { get; }
+    public SolidColorBrush[] CorePalette { get; }
+
+
 
     public double DotRadius { get; } 
     public double DotGlowRadius { get; }
@@ -40,6 +43,7 @@ public class EntropyStyle
 
         LUTCount = 100;
         GlowPalette = new RadialGradientBrush[LUTCount];
+        CorePalette = new SolidColorBrush[LUTCount];
         DotRadius = 2.5;
         DotGlowRatio = 3;
         DotGlowRadius = DotRadius * DotGlowRatio;
@@ -53,7 +57,7 @@ public class EntropyStyle
         {
             double amount = i / (double)LUTCount; 
             Color color = InterpolateColor(colorStart, colorEnd, amount);
-            
+            CorePalette[i] = new SolidColorBrush(color);
             GlowPalette[i] = new RadialGradientBrush()
             {
                 Center = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
