@@ -1,6 +1,7 @@
 using System;
 using Aprilia.Controllers;
 using Aprilia.Engines.Glance;
+using Aprilia.Engines.LoadingHUD;
 using Aprilia.Engines.Mediator;
 using Aprilia.Engines.SpanningTree.Controller;
 using Aprilia.Engines.SpanningTree.DotMap;
@@ -48,6 +49,7 @@ public partial class App : Application
         services.AddSingleton<GlanceController>();
         services.AddSingleton<GlanceContentLoader>();
         services.AddSingleton<TwinRenderMediator>();
+        services.AddSingleton<ILoadingHUD, Section9HUD>();
         
         //views (their models)
         services.AddSingleton<InitViewModel>();

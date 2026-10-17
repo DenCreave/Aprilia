@@ -22,6 +22,20 @@ public sealed class AnimatrixController
         shape.Cox = tempex * cosTheta - tempey * sinTheta;
         shape.Coy = tempex * sinTheta + tempey * cosTheta;
     }
+    
+    public void Rotate(Vertex rotateFrom, Vertex shape, double angleInRadians)
+    {
+        double tempex = rotateFrom.Cox;
+        double tempey = rotateFrom.Coy;
+
+        // Calculate the sine and cosine of the angle
+        double cosTheta = Math.Cos(angleInRadians);
+        double sinTheta = Math.Sin(angleInRadians);
+
+        // Apply the rotation formulas
+        shape.Cox = tempex * cosTheta - tempey * sinTheta;
+        shape.Coy = tempex * sinTheta + tempey * cosTheta;
+    }
 
     public double[] HaltonSequencer1D(int size, int bass = 2)
     {

@@ -3,6 +3,7 @@
              xmlns:vm="clr-namespace:Aprilia.ViewModels"
              xmlns:ui="clr-namespace:Aprilia.Engines.SpanningTree.UI"
              xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content"
+             xmlns:glance="clr-namespace:Aprilia.Engines.Glance"
              x:Class="Aprilia.Views.LandingCVView"
              x:DataType="vm:LandingCVViewModel">
 
@@ -30,6 +31,6 @@
                 </DataTemplate>
             </ItemsControl.DataTemplates>
         </ItemsControl>
-
+        <glance:GlanceRenderer />
     </Grid>
 </UserControl>

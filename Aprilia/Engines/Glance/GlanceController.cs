@@ -16,12 +16,14 @@ public sealed class GlanceController
     private double _targetTicks = 0;
     private double _progressedTicks = 0;
     
-    private double _ticksRequired = 3.0; 
-    private readonly int _baseCost = 3;
-    private readonly int _penaltyCost = 5;
+    public double TicksRequired { get; private set; } = 3.0; 
+    public readonly int BaseCost = 3;
+    public readonly int PenaltyCost = 5;
     
     private readonly int _idleDecayDelayMs = 1500; 
-    private readonly double _decayRate = 0.1; 
+    private readonly double _decayRate = 0.1;
+    
+    private bool _isDecaying  { get; set; } = false;
 
     public GlanceController(GlanceState state, GlanceContentLoader contentLoader)
     {
@@ -48,22 +50,31 @@ public sealed class GlanceController
         if (State.CurrentFocus == State.MaxPages - 1 && _targetTicks > 0) _targetTicks = 0;
     }
 
-    private void OnPhysicsTick(object? sender, EventArgs e)
+
+    private void DecayChecker()
     {
         double idleMs = (DateTime.Now - _lastScrollTime).TotalMilliseconds;
-        bool isDecaying = idleMs > _idleDecayDelayMs;
-
+        bool pastDecayMs = idleMs > _idleDecayDelayMs;
         // decay trigger
-        if (isDecaying)
+        if (pastDecayMs && !_isDecaying)
         {
-            _targetTicks = 0;           
+            _targetTicks = 0;
+            _isDecaying = true;
         }
-
-
+        else if (pastDecayMs && _isDecaying && Math.Abs(_progressedTicks - _targetTicks) < 0.001)
+        {
+            _isDecaying = false;
+            TicksRequired = BaseCost;
+        }
+    }
+    private void OnPhysicsTick(object? sender, EventArgs e)
+    {
+        DecayChecker();
+        
         double distance = _targetTicks - _progressedTicks;
         
         // If decaying, drift slowly (4%). If actively scrolling, move fast (15%).
-        double activeLerpRate = isDecaying ? 0.04 : 0.10;
+        double activeLerpRate = _isDecaying ? 0.04 : 0.10;
         if (Math.Abs(distance) < 0.03) 
         {
             _progressedTicks = _targetTicks;
@@ -73,8 +84,9 @@ public sealed class GlanceController
             _progressedTicks += distance * activeLerpRate; 
         }
 
+        //Console.WriteLine($"penalty cost atm: {TicksRequired}");
         // 3. UPDATE STATE
-        State.StrainProgress = Math.Round(_progressedTicks / _ticksRequired, 4);
+        State.StrainProgress = Math.Round(_progressedTicks / TicksRequired, 4);
         
         if (State.StrainProgress >= 1 && State.CurrentFocus < State.MaxPages - 1)
         {
@@ -93,7 +105,7 @@ public sealed class GlanceController
         _targetTicks = 0;
         _progressedTicks = 0;
         State.StrainProgress = 0;
-        _ticksRequired = _penaltyCost; 
+        TicksRequired = PenaltyCost; 
 
         for (int i = 0; i < _contentLoader.Pages.Count; i++)
         {
