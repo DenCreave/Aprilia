@@ -7,7 +7,7 @@
              x:Class="Aprilia.Views.LandingCVView"
              x:DataType="vm:LandingCVViewModel">
 
-    <Grid Background="Black" PointerWheelChanged="OnPointerWheelChanged" ScrollGesture="OnScrollGesture">
+    <Grid Background="Transparent" PointerWheelChanged="OnPointerWheelChanged" ScrollGesture="OnScrollGesture">
         <!-- Animated bg -->
         <ui:SpanningTreeRenderer STC="{Binding Stc}" STT="{Binding Stt}" />
 

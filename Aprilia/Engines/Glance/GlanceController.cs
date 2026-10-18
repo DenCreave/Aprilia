@@ -52,6 +52,7 @@ public sealed class GlanceController
         _targetTicks += tickAmount;
         if (State.CurrentFocus == 0 && _targetTicks < 0) _targetTicks = 0;
         if (State.CurrentFocus == State.MaxPages - 1 && _targetTicks > 0) _targetTicks = 0;
+        Console.WriteLine($"delta Y: {deltaY}\n Tagerticks {_targetTicks}");
     }
 
 
@@ -84,6 +85,7 @@ public sealed class GlanceController
         }
         DecayChecker();
         
+        
         double distance = _targetTicks - _progressedTicks;
         
         // If decaying, drift slowly (4%). If actively scrolling, move fast (15%).
@@ -108,11 +110,12 @@ public sealed class GlanceController
         {
             FlipPage(-1);
         }
+        
     }
     
     private void FlipPage(int direction)
     {
-        State.CurrentFocus += direction;
+        State.CurrentFocus = Math.Clamp(State.CurrentFocus + direction, 0, State.MaxPages - 1);
         
         _targetTicks = 0;
         _progressedTicks = 0;

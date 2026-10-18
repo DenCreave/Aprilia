@@ -29,7 +29,7 @@ public sealed class Vertex : IEquatable<Vertex>
     public bool IsEnabled { get; set; } = false;
 
     
-    //todo cleanup
+    //to-do cleanup. hehe lol no! now ruined the tod-o
     public Vertex UpdateCO()
     {
         /*// 1. Calculate the exact mathematical step based on our local axes
@@ -41,7 +41,7 @@ public sealed class Vertex : IEquatable<Vertex>
         Coy += _finalMovementStepY * Speed;*/
         
         //keeping coordinates within bounds of the screen will be the task of the handlers
-        //todo test this formula
+
         Cox+=Vex*Speed;
         Coy+=Vey*Speed;
         return this;

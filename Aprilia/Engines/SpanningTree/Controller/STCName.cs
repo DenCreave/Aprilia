@@ -4,5 +4,5 @@ public enum STCName
 {
     Iris,
     RingOfIris
-    //todo
+    //hmmmm. maybe remove it. ported from siren display. seems redundant.
 }

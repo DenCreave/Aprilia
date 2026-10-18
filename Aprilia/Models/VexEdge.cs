@@ -31,10 +31,7 @@ public sealed class VexEdge : IEquatable<VexEdge>, IComparable<VexEdge>
         Distance = Math.Sqrt(Math.Pow(A.Cox - B.Cox, 2) + Math.Pow(A.Coy - B.Coy, 2)) * A.Weight * B.Weight;
         return this;
     }
-
-    ///todo somehow make control these animations... i think ive got an idea
-    /// maybe that tick thingie like with the clock, although not sure
-    /// DispatcherTimer
+    
     public VexEdge EnableAnimation()
     {
         IsEnabled = true;

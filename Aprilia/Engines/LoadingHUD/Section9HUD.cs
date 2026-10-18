@@ -164,16 +164,16 @@ public class Section9HUD : ILoadingHUD
         }
 
         // 2. THE MATH: Advance the animation for any active shockwaves
-        Console.WriteLine("we are in UPDATE Shockerwaven");
+        //Console.WriteLine("we are in UPDATE Shockerwaven");
         foreach (var wave in _shockwaves)
         {
             if (wave.IsAnimating)
             {
-                Console.WriteLine("we found one thats animatin in  Shockerwaven");
+                //Console.WriteLine("we found one thats animatin in  Shockerwaven");
                 // 0.033 per frame = exactly 0.5 seconds at 60fps
                 
                 wave.AnimationProgress += 1/(60.0/2);
-                Console.WriteLine($"animation value: {wave.AnimationProgress}");
+                //Console.WriteLine($"animation value: {wave.AnimationProgress}");
                 if (wave.AnimationProgress >= 1.0)
                 {
                     wave.IsAnimating = false; // Kill it, return to the pool
@@ -264,7 +264,7 @@ public class Section9HUD : ILoadingHUD
     {
         double absStrain = Math.Abs(_camera.StrainProgress);
         int activeNodes = (int)_glanceController.TicksRequired; // 3 or 5
-        double step = 1.0 / (activeNodes * 2.0); //todo: steps might be incorrect cos no PI
+        double step = 1.0 / (activeNodes * 2.0);
 
         for (int i = 0; i < activeNodes; i++)
         {
@@ -292,6 +292,9 @@ public class Section9HUD : ILoadingHUD
         using (context.PushTransform(Matrix.CreateTranslation(centerX, centerY)))
         {
             DrawShockwaves(context, effectBounds);
+            
+            DrawRolodex(context);
+
             for (int i = 0; i < activeNodes; i++)
             {
                 using (context.PushTransform(Matrix.CreateRotation(Math.PI / 180.0 * (i * angleStep))))
@@ -302,6 +305,53 @@ public class Section9HUD : ILoadingHUD
             }
         }
         
+    }
+    
+    private void DrawRolodex(DrawingContext context)
+    {
+        int totalPages = _contentLoader.Pages.Count;
+        if (totalPages == 0) return;
+
+        double lineHeight = 30.0; // How far apart the words are
+        double strain = _camera.StrainProgress; // -1.0 to 1.0
+
+        // We draw 3 labels: Previous (-1), Current (0), Next (1)
+        for (int offset = -1; offset <= 1; offset++)
+        {
+            // 1. CALCULATE Y POSITION
+            // If strain is 0.5 (scrolling down), the text slides UP by half a line.
+            double finalY = (offset * lineHeight) - (strain * lineHeight);
+
+            // 2. CALCULATE OPACITY
+            // 1.0 at the exact center (finalY = 0). Fades to 0.0 as it hits the lineHeight distance.
+            double opacity = Math.Clamp(1.0 - Math.Abs(finalY / lineHeight), 0.0, 1.0);
+
+            if (opacity <= 0.01) continue;
+
+            // 3. GET THE TEXT (With safe modulo wrapping for infinite scrolling!)
+            int pageIndex = (_camera.CurrentIndex + offset + totalPages) % totalPages;
+            string pageName = _contentLoader.Pages[pageIndex].PageName.ToString().ToUpper();
+
+            // 4. FORMAT THE TEXT (Avalonia 11 syntax)
+            var typeface = new Typeface("sans-serif", FontStyle.Normal, FontWeight.Bold);
+            var formattedText = new FormattedText(
+                pageName,
+                System.Globalization.CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                typeface,
+                16, // Font size
+                _hexagonBrush // Cyan text! lol no.
+            );
+
+            // 5. DRAW IT (Offset by half its width/height so it is perfectly centered)
+            double textX = -formattedText.Width / 2.0;
+            double textY = finalY - (formattedText.Height / 2.0);
+
+            using (context.PushOpacity(opacity))
+            {
+                context.DrawText(formattedText, new Point(textX, textY));
+            }
+        }
     }
 
     

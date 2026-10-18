@@ -113,7 +113,7 @@ public sealed class AnimatrixController
         double offsetX = vertex.Cox - shadowX;
         double offsetY = vertex.Coy - shadowY;
 
-        // todo absolute distance from the line, will have to use this
+        // absolute distance from the line, will have to use this
         // in the calculation for the lateral oscillation
 
         // ==========================================
@@ -166,7 +166,7 @@ public sealed class AnimatrixController
         }
 
 
-        // todo absolute ends here
+        // absolute ends here
 
         // ==========================================
         // STEP 4: FINDING B'
@@ -194,7 +194,7 @@ public sealed class AnimatrixController
         if (shadowProgress >= wallLength)
         {
             ++vertex.TargetPathIndex;
-            // todo  this is where the cutoff should be for spawn despawn.
+            // this is where the cutoff should be for spawn despawn.
 
 
             /* // Loop back to the start if we reached the end of the whole path
@@ -202,7 +202,7 @@ public sealed class AnimatrixController
              {
                  vertex.TargetPathIndex = 1;
 
-                 // todo the respawn and despawn logic should come here.
+                 // the respawn and despawn logic should come here.
                  vertex.Cox = uniqueProps.TorrentPath[0].X;
                  vertex.Coy = uniqueProps.TorrentPath[0].Y;
              }*/

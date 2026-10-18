@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Aprilia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Aprilia.Views.InitView"
-             x:DataType="vm:InitViewModel">
+             x:DataType="vm:InitViewModel"
+             Background="Black">
     <ContentControl Content="{Binding Navigator.CurrentView}" />
 </UserControl>
