@@ -1,6 +1,7 @@
 using System;
 using Aprilia.Controllers;
 using Aprilia.Engines.Glance;
+using Aprilia.Engines.SpanningTree.UI.Entropy;
 using Aprilia.Interfaces;
 using Aprilia.Models;
 using Aprilia.Models.Shapes;
@@ -25,6 +26,11 @@ public class Section9HUD : ILoadingHUD
 
     private readonly HexagonShape _baseHexagon;
     private readonly TrapezoidShape _baseTrapezoid;
+    
+    private readonly ShockwaveRing[] _shockwaves = new ShockwaveRing[11];
+    private readonly TrapezoidShape _fullTrapezoidBase;    // e.g. for 3 nodes
+    private readonly TrapezoidShape _fullTrapezoidPenalty; // e.g. for 5 nodes
+    
     private readonly double RADIUS = 50;
     private double GAP = 5.0;
     private double GAP_ANGLE;
@@ -33,14 +39,19 @@ public class Section9HUD : ILoadingHUD
     public Section9HUD(CameraState camera,
         GlanceContentLoader contentLoader,
         GlanceController glanceController,
-        AnimatrixController animatrixController)
+        AnimatrixController animatrixController,
+        EntropyStyle colorStyle)
     {
         _camera = camera;
         _contentLoader = contentLoader;
         _glanceController = glanceController;
         _animatrixController = animatrixController;
-        _hexagonBrush = new SolidColorBrush(Colors.Cyan);
-        _trapezoidBrush = new SolidColorBrush(Colors.HotPink);
+        // looooool, theres a new "index from end" expression [^1]
+        // never heard of it! thy jetbrains!
+        _hexagonBrush = colorStyle.CorePalette[0];
+        _trapezoidBrush = colorStyle.CorePalette[colorStyle.CorePalette.Length / 3 * 2];
+        //_hexagonBrush = new SolidColorBrush(Colors.Cyan);
+        //_trapezoidBrush = new SolidColorBrush(Colors.HotPink);
         Hexagons = new HexagonShape[_glanceController.PenaltyCost];
         Trapezoids = new TrapezoidShape[_glanceController.PenaltyCost];
         for (int i = 0; i < _glanceController.PenaltyCost; i++)
@@ -84,6 +95,56 @@ public class Section9HUD : ILoadingHUD
             _baseTrapezoid.UniqueProps.HexBotRight2TrapBotLeft, 
             GAP_ANGLE);
         
+        
+        // claculations for shockwave rings.
+        for (int i = 0; i < _shockwaves.Length; i++)
+        {
+            _shockwaves[i] = new ShockwaveRing();
+        }
+        
+        // 1. Calculate the thinned LEFT edge of the base hexagon
+        // (This will become the right edge of our trapezoids after rotation!)
+        double startLeftX = _baseHexagon.UniqueProps.HexMidLeft2TrapTopRight.Cox;
+        double startLeftY = _baseHexagon.UniqueProps.HexMidLeft2TrapTopRight.Coy;
+        double vecLeftX = _baseHexagon.UniqueProps.HexBotLeft2TrapBotRight.Cox - startLeftX;
+        double vecLeftY = _baseHexagon.UniqueProps.HexBotLeft2TrapBotRight.Coy - startLeftY;
+        
+        Vertex thinnedBotLeft = new Vertex { Cox = startLeftX + vecLeftX * LENGTHMULTIPLIER, Coy = startLeftY + vecLeftY * LENGTHMULTIPLIER };
+
+        // 2. Base Cost (3 Nodes)
+        _fullTrapezoidBase = new TrapezoidShape();
+        double sliceAngleBase = (Math.PI * 2) / _glanceController.BaseCost;
+        double targetRotationBase = sliceAngleBase - GAP_ANGLE;
+        
+        // Anchor left side
+        _fullTrapezoidBase.UniqueProps.HexMidRight2TrapTopLeft.Cox = _baseTrapezoid.UniqueProps.HexMidRight2TrapTopLeft.Cox;
+        _fullTrapezoidBase.UniqueProps.HexMidRight2TrapTopLeft.Coy = _baseTrapezoid.UniqueProps.HexMidRight2TrapTopLeft.Coy;
+        _fullTrapezoidBase.UniqueProps.HexBotRight2TrapBotLeft.Cox = _baseTrapezoid.UniqueProps.HexBotRight2TrapBotLeft.Cox;
+        _fullTrapezoidBase.UniqueProps.HexBotRight2TrapBotLeft.Coy = _baseTrapezoid.UniqueProps.HexBotRight2TrapBotLeft.Coy;
+        
+        // Extrude right side (Rotate the left edge of the hexagon!)
+        _animatrixController.Rotate(_baseHexagon.UniqueProps.HexMidLeft2TrapTopRight, _fullTrapezoidBase.UniqueProps.HexMidLeft2TrapTopRight, targetRotationBase);
+        _animatrixController.Rotate(thinnedBotLeft, _fullTrapezoidBase.UniqueProps.HexBotLeft2TrapBotRight, targetRotationBase);
+        _fullTrapezoidBase.UniqueProps.Extrusion = 1.0; 
+
+        // 3. Penalty Cost (5 Nodes)
+        _fullTrapezoidPenalty = new TrapezoidShape();
+        double sliceAnglePenalty = (Math.PI * 2) / _glanceController.PenaltyCost;
+        double targetRotationPenalty = sliceAnglePenalty - GAP_ANGLE;
+        
+        // Anchor left side
+        _fullTrapezoidPenalty.UniqueProps.HexMidRight2TrapTopLeft.Cox = _baseTrapezoid.UniqueProps.HexMidRight2TrapTopLeft.Cox;
+        _fullTrapezoidPenalty.UniqueProps.HexMidRight2TrapTopLeft.Coy = _baseTrapezoid.UniqueProps.HexMidRight2TrapTopLeft.Coy;
+        _fullTrapezoidPenalty.UniqueProps.HexBotRight2TrapBotLeft.Cox = _baseTrapezoid.UniqueProps.HexBotRight2TrapBotLeft.Cox;
+        _fullTrapezoidPenalty.UniqueProps.HexBotRight2TrapBotLeft.Coy = _baseTrapezoid.UniqueProps.HexBotRight2TrapBotLeft.Coy;
+        
+        // Extrude right side (Rotate the left edge of the hexagon!)
+        _animatrixController.Rotate(_baseHexagon.UniqueProps.HexMidLeft2TrapTopRight, _fullTrapezoidPenalty.UniqueProps.HexMidLeft2TrapTopRight, targetRotationPenalty);
+        _animatrixController.Rotate(thinnedBotLeft, _fullTrapezoidPenalty.UniqueProps.HexBotLeft2TrapBotRight, targetRotationPenalty);
+        _fullTrapezoidPenalty.UniqueProps.Extrusion = 1.0;
+        
+        
+        
     }
 
 
@@ -91,6 +152,50 @@ public class Section9HUD : ILoadingHUD
     {
         UpdateHexagons();
         UpdateTrapezoids();
+        UpdateShockwaves();
+    }
+    
+    private void UpdateShockwaves()
+    {
+        // 1. THE TRIGGER: Did the physics engine just flip a page?
+        if (_glanceController.State.JustFlipped)
+        {
+            TriggerAvailableShockwave();
+        }
+
+        // 2. THE MATH: Advance the animation for any active shockwaves
+        Console.WriteLine("we are in UPDATE Shockerwaven");
+        foreach (var wave in _shockwaves)
+        {
+            if (wave.IsAnimating)
+            {
+                Console.WriteLine("we found one thats animatin in  Shockerwaven");
+                // 0.033 per frame = exactly 0.5 seconds at 60fps
+                
+                wave.AnimationProgress += 1/(60.0/2);
+                Console.WriteLine($"animation value: {wave.AnimationProgress}");
+                if (wave.AnimationProgress >= 1.0)
+                {
+                    wave.IsAnimating = false; // Kill it, return to the pool
+                }
+            }
+        }
+    }
+
+    private void TriggerAvailableShockwave()
+    {
+        foreach (var wave in _shockwaves)
+        {
+            if (!wave.IsAnimating)
+            {
+                wave.IsAnimating = true;
+                wave.AnimationProgress = 0.0;
+                
+                // Capture the current node count (3 or 5) so the shockwave matches the UI!
+                wave.NodeCount = (int)_glanceController.TicksRequired; 
+                break;
+            }
+        }
     }
 
     private void UpdateTrapezoids()
@@ -172,16 +277,21 @@ public class Section9HUD : ILoadingHUD
     public void Draw(DrawingContext context, double screenWidth, double screenHeight)
     {
         int activeNodes = (int)_glanceController.TicksRequired;
+        
         if (activeNodes <= 0) return;
 
         double angleStep = 360.0 / activeNodes;
         
         // LIVE SCREEN CENTERING
-        double centerX = screenWidth * 0.3; 
-        double centerY = screenHeight * 0.2;
+        double centerX = screenWidth * 0.2; 
+        double centerY = screenHeight * 0.8;
+        
+        // Shift the box up and left so (0,0) is perfectly in the middle of it!
+        var effectBounds = new Rect(-centerX, -centerY, screenWidth, screenHeight);
 
         using (context.PushTransform(Matrix.CreateTranslation(centerX, centerY)))
         {
+            DrawShockwaves(context, effectBounds);
             for (int i = 0; i < activeNodes; i++)
             {
                 using (context.PushTransform(Matrix.CreateRotation(Math.PI / 180.0 * (i * angleStep))))
@@ -191,8 +301,42 @@ public class Section9HUD : ILoadingHUD
                 }
             }
         }
+        
     }
+
     
+    private void DrawShockwaves(DrawingContext context, Rect effectBounds)
+    {
+        foreach (var wave in _shockwaves)
+        {
+            if (!wave.IsAnimating) continue;
+            // Calculate blur: Starts at 0, blurs out to 20 pixels as it expands
+            double blurAmount = wave.AnimationProgress * 20.0;
+
+            double waveScale = 1.0 + (wave.AnimationProgress * 1.5); 
+            double waveOpacity = (1.0 - wave.AnimationProgress); 
+            double angleStep = 360.0 / wave.NodeCount;
+
+            using (context.PushTransform(Matrix.CreateScale(waveScale, waveScale)))
+            using (context.PushOpacity(waveOpacity))
+            using (context.PushEffect(new BlurEffect { Radius = blurAmount }, effectBounds))
+            {
+                for (int i = 0; i < wave.NodeCount; i++)
+                {
+                    using (context.PushTransform(Matrix.CreateRotation(Math.PI / 180.0 * (i * angleStep))))
+                    {
+                        // Draw the Hexagon (DrawShape ignores opacity checks)
+                        DrawShape(context, _baseHexagon, _hexagonBrush);
+                        
+                        // Draw the Trapezoid (DrawTrap uses the beautiful ArcTo curves!)
+                        var fullTrap = (wave.NodeCount == _glanceController.BaseCost) ? _fullTrapezoidBase : _fullTrapezoidPenalty;
+                        DrawTrap(context, fullTrap);
+                    }
+                }
+            }
+        }
+    }
+     
     private void DrawHex(DrawingContext context, HexagonShape hex)
     {
         if (hex.UniqueProps.Opacity <= 0) return;

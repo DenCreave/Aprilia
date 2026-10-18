@@ -24,20 +24,24 @@ public sealed class GlanceController
     private readonly double _decayRate = 0.1;
     
     private bool _isDecaying  { get; set; } = false;
+    //public bool FlipInduced { get; set; } = false;
 
     public GlanceController(GlanceState state, GlanceContentLoader contentLoader)
     {
+        _isDecaying = false;
+        state.JustFlipped = false;
         State = state;
         _contentLoader = contentLoader;
         State.MaxPages = contentLoader.Pages.Count;
         
-        _physicsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.0 / 60) };
+        /*_physicsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.0 / 60) };
         _physicsTimer.Tick += OnPhysicsTick;
-        _physicsTimer.Start();
+        _physicsTimer.Start();*/
     }
 
     public void HandleScroll(double deltaY)
     {
+        _isDecaying = false;
         _lastScrollTime = DateTime.Now;
         var currentPage = _contentLoader.Pages[State.CurrentFocus];
 
@@ -56,19 +60,28 @@ public sealed class GlanceController
         double idleMs = (DateTime.Now - _lastScrollTime).TotalMilliseconds;
         bool pastDecayMs = idleMs > _idleDecayDelayMs;
         // decay trigger
+        /*Console.WriteLine($"{idleMs}ms {pastDecayMs}");
+        Console.WriteLine($"is decaying value: {_isDecaying}");*/
         if (pastDecayMs && !_isDecaying)
         {
             _targetTicks = 0;
             _isDecaying = true;
         }
-        else if (pastDecayMs && _isDecaying && Math.Abs(_progressedTicks - _targetTicks) < 0.001)
+        if (pastDecayMs && _isDecaying && Math.Abs(State.StrainProgress) < 0.01)
         {
             _isDecaying = false;
+            _progressedTicks = 0;
             TicksRequired = BaseCost;
         }
     }
-    private void OnPhysicsTick(object? sender, EventArgs e)
+
+    public void UpdatePhysics()
     {
+        if (State.JustFlipped) 
+        {
+            State.JustFlipped = false;
+            TicksRequired = PenaltyCost;
+        }
         DecayChecker();
         
         double distance = _targetTicks - _progressedTicks;
@@ -87,7 +100,6 @@ public sealed class GlanceController
         //Console.WriteLine($"penalty cost atm: {TicksRequired}");
         // 3. UPDATE STATE
         State.StrainProgress = Math.Round(_progressedTicks / TicksRequired, 4);
-        
         if (State.StrainProgress >= 1 && State.CurrentFocus < State.MaxPages - 1)
         {
             FlipPage(1);
@@ -105,7 +117,8 @@ public sealed class GlanceController
         _targetTicks = 0;
         _progressedTicks = 0;
         State.StrainProgress = 0;
-        TicksRequired = PenaltyCost; 
+        State.JustFlipped = true;
+       // TicksRequired = PenaltyCost; 
 
         for (int i = 0; i < _contentLoader.Pages.Count; i++)
         {
@@ -113,4 +126,6 @@ public sealed class GlanceController
             _contentLoader.Pages[i].PageOpacity = isCurrent ? 1 : 0;
         }
     }
+    
+    
 }

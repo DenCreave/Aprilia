@@ -23,6 +23,12 @@
                 <DataTemplate DataType="{x:Type content:DummyContent}">
                     <!-- Binds to the Opacity controlled by GlanceController! -->
                     <Grid Opacity="{Binding PageOpacity}">
+                        <Grid.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.5" Easing="CubicEaseOut" />
+                            </Transitions>
+                        </Grid.Transitions>
+                        
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="{Binding Headline}" FontSize="50" Foreground="Cyan" FontWeight="Bold" />
                             <TextBlock Text="{Binding BodyText}" FontSize="20" Foreground="White" Margin="0,20,0,0" />

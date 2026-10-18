@@ -14,13 +14,14 @@ namespace Aprilia.Engines.Glance;
 public class GlanceRenderer : Control
 {
     private readonly ILoadingHUD _hud;
+    private readonly GlanceController _glanceController;
     private readonly DispatcherTimer _renderTimer;
 
     public GlanceRenderer()
     {
         // Grab the HUD from your DI container!
         _hud = App.Services.GetRequiredService<ILoadingHUD>();
-
+        _glanceController = App.Services.GetRequiredService<GlanceController>(); 
         _renderTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromSeconds(1.0 / 60)
@@ -28,6 +29,7 @@ public class GlanceRenderer : Control
 
         _renderTimer.Tick += (sender, args) =>
         {
+            _glanceController.UpdatePhysics();
             _hud.UpdateHUD();
             InvalidateVisual(); // Tells Avalonia to trigger the Render method
         };
