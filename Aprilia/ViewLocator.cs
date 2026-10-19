@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Aprilia.Engines.Glance;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Aprilia.ViewModels;
@@ -18,9 +19,32 @@ public class ViewLocator : IDataTemplate
     {
         if (data is null)
             return null;
+        
+        string fullName = data.GetType().FullName!;
+        string viewName=String.Empty;
 
-        var name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
+
+        if (fullName.Contains("ViewModel"))
+        {
+            viewName = fullName.Replace("ViewModel", "View", StringComparison.Ordinal);
+        }
+        // 2. Handle your custom CMS Content!
+        else if (fullName.Contains("Engines.Glance.Content"))
+        {
+            // Translates: Aprilia.Engines.Glance.Content.IntroContent 
+            // To:         Aprilia.Views.Pages.IntroPageView
+            viewName = fullName
+                .Replace("Engines.Glance.Content", "Views.Pages")
+                .Replace("Content", "PageView");
+        }
+        else
+        {
+            return new TextBlock { Text = $"Locator Failed!\nFull Name: {fullName}\nViewName: {viewName} "};
+        }
+        
+        
+        
+        var type = Type.GetType(viewName);
 
         if (type != null)
         {
@@ -29,12 +53,14 @@ public class ViewLocator : IDataTemplate
             return control;
 
         }
-
-        return new TextBlock { Text = "Not Found: " + name };
+        else
+        {
+            return new TextBlock { Text = "Locator Failed: Type was null" };
+        }
     }
 
     public bool Match(object? data)
     {
-        return data is ViewModelBase;
+        return data is ViewModelBase || data is IGlanceContent;
     }
 }

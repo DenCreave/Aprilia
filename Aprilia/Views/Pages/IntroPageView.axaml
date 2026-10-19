@@ -3,11 +3,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content"
+             xmlns:controls="clr-namespace:Aprilia.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Aprilia.Views.Pages.IntroPageView"
              x:DataType="content:IntroContent">
     
-    <StackPanel Opacity="{Binding PageOpacity}" IsVisible="{Binding IsActivePage}">
-        <TextBlock Text="{Binding Headline}" FontSize="20" Foreground="HotPink" />
-    </StackPanel>
+    <controls:Datapad>
+        <controls:Datapad.InnerContent>
+            
+            <!-- YOUR ACTUAL CV TEXT GOES HERE -->
+            <StackPanel Spacing="20">
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
+                <!--   <TextBlock Text="{Binding Subtitle}" FontSize="20" Foreground="HotPink" FontWeight="Bold" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding BodyText}" FontSize="18" Foreground="White" TextWrapping="Wrap" LineHeight="28" /> -->
+            </StackPanel>
+            
+        </controls:Datapad.InnerContent>
+    </controls:Datapad>
 </UserControl>

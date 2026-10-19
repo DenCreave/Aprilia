@@ -2,9 +2,11 @@ namespace Aprilia.Engines.Glance;
 
 public enum GlancePage
 {
-    Landing,
+    Intro,
     AboutMe,
     Experience,
     Portfolio,
-    Dummy
+    Dummy,
+    Disabled,
+    Void
 }

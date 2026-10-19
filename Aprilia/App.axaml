@@ -3,7 +3,19 @@
              xmlns:local="using:Aprilia"
              x:Class="Aprilia.App"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+
+    <Application.Resources>
+        <LinearGradientBrush x:Key="CVGradient" StartPoint="0%,0%" EndPoint="100%,100%">
+            <GradientStop Color="#FF0090" Offset="0.0" />
+            <GradientStop Color="#FF6D3D" Offset="1.0" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CVGradientTransparent" StartPoint="0%,0%" EndPoint="100%,100%" Opacity="0.85">
+            <GradientStop Color="#FF0090" Offset="0.0" />
+            <GradientStop Color="#FF6D3D" Offset="1.0" />
+        </LinearGradientBrush>
+    </Application.Resources>
 
     <Application.DataTemplates>
         <local:ViewLocator />

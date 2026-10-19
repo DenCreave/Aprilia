@@ -17,17 +17,6 @@ public sealed class GlanceContentLoader
 
         Pages = new List<IGlanceContent>();
         
-        // Generate 4 dummy pages to test the scroll bounds
-        for (int i = 0; i < 4; i++)
-        {
-            Pages.Add(new DummyContent() 
-            { 
-                Headline = $"THIS IS PAGE {i}",
-                BodyText = "Lorem ipsum dolor sit amet. \n\nImagine a picture here.\n\nImagine 10 pictures here.\n\nKeep scrolling down...",
-                PageOpacity = (i == 0) ? 1 : 0 // <-- THIS FIXES IT. Page 0 starts visible!
-            });
-        }
-        
         foreach (var type in types)
         {
             if (ActivatorUtilities.CreateInstance(App.Services, type) is IGlanceContent content)
@@ -36,6 +25,22 @@ public sealed class GlanceContentLoader
             }
         }
         
-        Pages = Pages.OrderBy(x => (int)x.PageName).ToList();
+        Pages = Pages
+            .Where(x => x.PageName != GlancePage.Disabled
+                        && x.PageName != GlancePage.Void
+                        && x.PageName != GlancePage.Dummy)
+            .OrderBy(x => (int)x.PageName)
+            .ToList();
+        
+        
+        for (int i = 0; i < 9; i++)
+        {
+            Pages.Add(new VoidContent());
+        }
+        
+        if (Pages.Count > 0)
+        {
+            Pages[0].PageOpacity = 1.0;
+        }
     }
 }

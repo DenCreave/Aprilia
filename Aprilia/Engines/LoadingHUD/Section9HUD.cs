@@ -283,8 +283,8 @@ public class Section9HUD : ILoadingHUD
         double angleStep = 360.0 / activeNodes;
         
         // LIVE SCREEN CENTERING
-        double centerX = screenWidth * 0.2; 
-        double centerY = screenHeight * 0.8;
+        double centerX = screenWidth * 0.15; 
+        double centerY = screenHeight * 0.3;
         
         // Shift the box up and left so (0,0) is perfectly in the middle of it!
         var effectBounds = new Rect(-centerX, -centerY, screenWidth, screenHeight);

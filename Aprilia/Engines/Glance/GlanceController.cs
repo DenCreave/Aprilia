@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Threading;
 using Aprilia.Engines.Glance;
 
@@ -8,6 +9,8 @@ public sealed class GlanceController
 {
     public GlanceState State { get; }
     private GlanceContentLoader _contentLoader { get; }
+    
+    private readonly HashSet<IGlanceContent> _fadingPages = new();
     
     private readonly DispatcherTimer _physicsTimer;
     private DateTime _lastScrollTime;
@@ -19,7 +22,8 @@ public sealed class GlanceController
     public double TicksRequired { get; private set; } = 3.0; 
     public readonly int BaseCost = 3;
     public readonly int PenaltyCost = 5;
-    
+    public readonly TimeSpan InactiveDelay = TimeSpan.FromMilliseconds(500);
+
     private readonly int _idleDecayDelayMs = 1500; 
     private readonly double _decayRate = 0.1;
     
@@ -111,23 +115,57 @@ public sealed class GlanceController
             FlipPage(-1);
         }
         
+        if (_fadingPages.Count > 0)
+        {
+            _fadingPages.RemoveWhere(page => 
+            {
+                if (page.HideAt.HasValue && DateTime.Now >= page.HideAt.Value)
+                {
+                    page.IsActivePage = false; // Remove from GPU!
+                    page.HideAt = null;        // Clear the timer
+                    return true;               // Tells HashSet to stop tracking this page
+                }
+                return false; // Keep tracking it, timer hasn't finished yet
+            });
+        }
+        
+        
     }
     
     private void FlipPage(int direction)
     {
+        int oldFocus = State.CurrentFocus;
+
         State.CurrentFocus = Math.Clamp(State.CurrentFocus + direction, 0, State.MaxPages - 1);
+        // Safety check: If the clamp prevented us from moving, don't do anything!
+        if (oldFocus == State.CurrentFocus) return; 
+
+        
         
         _targetTicks = 0;
         _progressedTicks = 0;
         State.StrainProgress = 0;
         State.JustFlipped = true;
        // TicksRequired = PenaltyCost; 
-
+        /*
         for (int i = 0; i < _contentLoader.Pages.Count; i++)
         {
             bool isCurrent = (i == State.CurrentFocus);
             _contentLoader.Pages[i].PageOpacity = isCurrent ? 1 : 0;
-        }
+        }*/
+        // 1. FADE OUT THE OLD PAGE
+        var oldPage = _contentLoader.Pages[oldFocus];
+        oldPage.PageOpacity = 0;
+        oldPage.HideAt = DateTime.Now.Add(InactiveDelay); // Set the death timer
+        _fadingPages.Add(oldPage); // Add to the Garbage Collector watch list
+
+        // 2. FADE IN THE NEW PAGE
+        var newPage = _contentLoader.Pages[State.CurrentFocus];
+        newPage.PageOpacity = 1;
+        newPage.IsActivePage = true; // Wake it up instantly
+        newPage.HideAt = null;       // Cancel any death timers
+        _fadingPages.Remove(newPage); // Remove from GC watch list (in case user scrolled back quickly)
+
     }
     
     
