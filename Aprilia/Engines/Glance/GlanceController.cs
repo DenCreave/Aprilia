@@ -38,9 +38,7 @@ public sealed class GlanceController
         _contentLoader = contentLoader;
         State.MaxPages = contentLoader.Pages.Count;
         
-        /*_physicsTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.0 / 60) };
-        _physicsTimer.Tick += OnPhysicsTick;
-        _physicsTimer.Start();*/
+
     }
 
     public void HandleScroll(double deltaY)
