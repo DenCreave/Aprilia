@@ -24,7 +24,7 @@
                     Background="{DynamicResource CVGradientTransparent} "
                     BorderThickness="3" 
                     CornerRadius="15"
-                    Padding="40"
+                    Padding="10"
                     BoxShadow="0 0 20 5 #44FF69B4">
                 
                 <!-- that function doesnt let scrolling pages if we arent 

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 
 namespace Aprilia.Engines.Security;
@@ -9,12 +12,14 @@ public class EncVault
 
     public EncVault()
     {
-        string q = "Aprilia<3";
-        
-        _cache["evolution"] = ImageDecryptor.LoadGpgImage("Assets/evolution.gpg", q);
-        _cache["flipflap"] = ImageDecryptor.LoadGpgImage("Assets/flipflap.gpg", q);
-        _cache["outside"] = ImageDecryptor.LoadGpgImage("Assets/outside.gpg", q);
-        _cache["easter_egg"] = ImageDecryptor.LoadGpgImage("Assets/easter_egg.gpg", q);
+        Stopwatch timer = new Stopwatch();
+        timer.Start();
+        _cache["evolution"] = ImageDecryptor.LoadEncImage("Assets/Metia/evolution");
+        _cache["flipflap"] = ImageDecryptor.LoadEncImage("Assets/Metia/flipflap");
+        _cache["outside"] = ImageDecryptor.LoadEncImage("Assets/Metia/outside");
+        _cache["easter_egg"] = ImageDecryptor.LoadEncImage("Assets/Metia/easter_egg");
+        timer.Stop();
+        Console.WriteLine($"total ellapsed timer for decryption: {timer.ElapsedMilliseconds} ms");
     }
 
     public Bitmap GetImage(string key)

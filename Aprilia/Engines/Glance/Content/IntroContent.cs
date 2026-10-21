@@ -31,21 +31,37 @@ public partial class IntroContent : ObservableObject, IGlanceContent
 
     public DateTime? HideAt { get; set; } = null;
 
-    public string Headline => "JULIUS DEER";
+    public string Name => "JULIUS DEER";
+    public string Profession => "COMPUTER SCIENTIST";
+    public string Telegram => $"t.me/dencreave";
+    public string TelegramIcon => "\uE5BC";
+
+    public string Email => $"dencreave@gmail.com";
+    public string EmailIcon => "\uE214";
+    public string Location => $"Berlin";
+    public string LocationIcon => $"\uE316";
+    public string Relocation => $"Open to EU/Global";
+    public string RelocationIcon => $"\uE5D6";
+    public string BriefBoutMe => "I'm a Computer Scientist (Szeged '25), who's specialized in" +
+                                 " C# .Net, backend and daily drives linux. I've " +
+                                 "recently relocated to Berlin because I'm passionate " +
+                                 "and dedicated to this profession and I want to be " +
+                                 "part of the research and development, I want to solve " +
+                                 "real world problems and work with bleeding edge technologies, like KDE or Rust.";
+    public string NotaBene => "The purpose of this website is to act as a portfolio and" +
+                              " give you an elaborate version on who I am compared to" +
+                              " the 1 page CV as that was meant to be a 1 page " +
+                              "introduction. To download the CV click the button below.";
 
     public IntroContent(EncVault encVault)
     {
         _encVault = encVault;
         CurrentProfileImage = _encVault.GetImage("evolution");
     }
+    
 
-    public void LoadImage()
-    {
-        var pic = ImageDecryptor.LoadGpgImage("Assets/Evolution.gpg", "Aprilia<3");
-    }
-
-    [RelayCommand]
-    public async Task OnImageClicked()
+    
+    public async Task ImageTapped()
     {
         Interlocked.Increment(ref _clickCount);
 

@@ -10,32 +10,57 @@
     
     <controls:Datapad>
         <controls:Datapad.InnerContent>
+        <Grid RowDefinitions="Auto, Auto, *">
+            <Grid Grid.Row="0" ColumnDefinitions="3*,Auto, 7*" >
+                <Border Grid.Column="0" ClipToBounds="True" >
+                    <Image Source="{Binding CurrentProfileImage}" Stretch="UniformToFill" Tapped="OnImageTapped"/>
+                </Border>
+                <Border Grid.Column="1" Width="2" Background="Transparent" Margin="10,0,10,0" VerticalAlignment="Stretch" />
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="10">
+                    <TextBlock Text="{Binding Name}" FontSize="34"  FontWeight="Bold" />
+                    <TextBlock Text="{Binding Profession}" FontSize="28" Foreground="Black" FontWeight="Bold" />
+                    
+                    <!-- Spacer -->
+                    <Border Height="2" Background="{DynamicResource BorderColor}" Margin="0,10,0,10" />
+
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="Icon" Text="{Binding EmailIcon}" />
+                        <TextBlock Text="{Binding Email}" />
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="Icon" Text="{Binding TelegramIcon}" />
+                        <TextBlock Text="{Binding Telegram}" />
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="Icon" Text="{Binding LocationIcon}" />
+                        <TextBlock Text="{Binding Location}" />
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="Icon" Text="{Binding RelocationIcon}" />
+                        <TextBlock Text="{Binding Relocation}" />
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="1" Width="5" Background="{DynamicResource BorderColor}" Margin="0,15" VerticalAlignment="Stretch" Opacity="0.9" />
             
-            <!-- YOUR ACTUAL CV TEXT GOES HERE -->
-            <StackPanel Spacing="20">
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" />
-                <!--   <TextBlock Text="{Binding Subtitle}" FontSize="20" Foreground="HotPink" FontWeight="Bold" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding BodyText}" FontSize="18" Foreground="White" TextWrapping="Wrap" LineHeight="28" /> -->
+            <StackPanel Grid.Row="2" Spacing="10">
+                <TextBlock Text="{Binding BriefBoutMe}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding NotaBene}" TextWrapping="Wrap"/>
+                
+                <!-- THE DOWNLOAD BUTTON -->
+                <Button Classes="CvButton" 
+                        Content="Download CV" 
+                        HorizontalAlignment="Center"
+                        Click="OnDownloadClicked"/>
             </StackPanel>
+
+        </Grid>
             
         </controls:Datapad.InnerContent>
     </controls:Datapad>
