@@ -8,15 +8,15 @@
              x:Class="Aprilia.Controls.Datapad"
              x:DataType="interfaces:IGlanceContent">
     <!--<Grid Opacity="{Binding PageOpacity}" IsVisible="{Binding IsActivePage}">-->
-    <Grid Opacity="{Binding PageOpacity}" >
+    <Grid Opacity="{Binding PageOpacity}">
         <Grid.Transitions>
             <Transitions>
-                <DoubleTransition Property="Opacity" Duration="0:0:0.5" Easing="CubicEaseOut" />
+                <DoubleTransition Property="Opacity" Duration="0:0:0.5" Easing="CubicEaseOut"/>
             </Transitions>
         </Grid.Transitions>
 
         <!-- THE RESPONSIVE PERCENTAGE GRID -->
-        <Grid ColumnDefinitions="3*, 6*, *" RowDefinitions="*, 8*, *">
+        <Grid ColumnDefinitions="3*, 6.8*, 0.2*" RowDefinitions="0.2*, 9.6*, 0.2*">
             
             <!-- The Datapad sits in the middle cell (Row 1, Column 1) -->
             <Border Grid.Row="1" Grid.Column="1"
@@ -30,7 +30,7 @@
                 <!-- that function doesnt let scrolling pages if we arent 
                 at top or bottom of the scrollviewer. ScrollChanged="OnScrollChanged"-->
                 <!--<ScrollViewer x:Name="PageScrollViewer" ScrollChanged="OnScrollChanged"> -->
-                <ScrollViewer x:Name="PageScrollViewer">
+                <ScrollViewer x:Name="PageScrollViewer" >
                     <ContentPresenter Content="{Binding InnerContent, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" /> 
                 </ScrollViewer>
                 

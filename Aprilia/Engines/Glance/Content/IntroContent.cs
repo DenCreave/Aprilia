@@ -21,13 +21,18 @@ public partial class IntroContent : ObservableObject, IGlanceContent
     [ObservableProperty] private Bitmap _currentProfileImage;
     public GlancePage PageName => GlancePage.Intro;
 
-    [ObservableProperty] private double _pageOpacity;
+    [ObservableProperty] 
+    private double _pageOpacity;
 
-    [ObservableProperty] private bool _isActivePage = false;
+    [ObservableProperty] private bool _isActivePage = true;
+    
 
 
     [ObservableProperty] private bool _isAtTop = true;
     [ObservableProperty] private bool _isAtBottom = true;
+    [ObservableProperty] private int _zIndex;
+    
+    
 
     public DateTime? HideAt { get; set; } = null;
 
@@ -57,6 +62,7 @@ public partial class IntroContent : ObservableObject, IGlanceContent
     {
         _encVault = encVault;
         CurrentProfileImage = _encVault.GetImage("evolution");
+        ZIndex = 1;
     }
     
 
@@ -65,12 +71,12 @@ public partial class IntroContent : ObservableObject, IGlanceContent
     {
         Interlocked.Increment(ref _clickCount);
 
-        if (_clickCount > 10)
+        if (_clickCount > 9)
         {
             _clickCount = 0;
         }
         Interlocked.Exchange(ref _easterEggActive, 0);
-        if (_clickCount<10)
+        if (_clickCount<9)
         {
             switch (_clickCount%3)
             {

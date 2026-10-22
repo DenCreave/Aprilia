@@ -20,8 +20,8 @@ public sealed class GlanceController
     private double _progressedTicks = 0;
     
     public double TicksRequired { get; private set; } = 3.0; 
-    public readonly int BaseCost = 3;
-    public readonly int PenaltyCost = 5;
+    public readonly int BaseCost = 5;
+    public readonly int PenaltyCost = 7;
     public readonly TimeSpan InactiveDelay = TimeSpan.FromMilliseconds(500);
 
     private readonly int _idleDecayDelayMs = 1500; 
@@ -46,7 +46,7 @@ public sealed class GlanceController
         _isDecaying = false;
         _lastScrollTime = DateTime.Now;
         var currentPage = _contentLoader.Pages[State.CurrentFocus];
-
+        Console.WriteLine(deltaY+" delta val");
         if (deltaY < 0 && !currentPage.IsAtBottom) return; 
         if (deltaY > 0 && !currentPage.IsAtTop) return;
         
@@ -119,7 +119,7 @@ public sealed class GlanceController
             {
                 if (page.HideAt.HasValue && DateTime.Now >= page.HideAt.Value)
                 {
-                    page.IsActivePage = false; // Remove from GPU!
+                    //page.IsActivePage = false; // Remove from GPU!
                     page.HideAt = null;        // Clear the timer
                     return true;               // Tells HashSet to stop tracking this page
                 }
@@ -140,6 +140,7 @@ public sealed class GlanceController
 
         
         
+        
         _targetTicks = 0;
         _progressedTicks = 0;
         State.StrainProgress = 0;
@@ -155,14 +156,17 @@ public sealed class GlanceController
         var oldPage = _contentLoader.Pages[oldFocus];
         oldPage.PageOpacity = 0;
         oldPage.HideAt = DateTime.Now.Add(InactiveDelay); // Set the death timer
+        oldPage.ZIndex = 0;
         _fadingPages.Add(oldPage); // Add to the Garbage Collector watch list
 
         // 2. FADE IN THE NEW PAGE
         var newPage = _contentLoader.Pages[State.CurrentFocus];
         newPage.PageOpacity = 1;
-        newPage.IsActivePage = true; // Wake it up instantly
+        //newPage.IsActivePage = true; // Wake it up instantly
         newPage.HideAt = null;       // Cancel any death timers
+        newPage.ZIndex = 1;
         _fadingPages.Remove(newPage); // Remove from GC watch list (in case user scrolled back quickly)
+        
 
     }
     

@@ -312,11 +312,11 @@ public class Section9HUD : ILoadingHUD
         int totalPages = _contentLoader.Pages.Count;
         if (totalPages == 0) return;
 
-        double lineHeight = 30.0; // How far apart the words are
+        double lineHeight = 26.0; // How far apart the words are
         double strain = _camera.StrainProgress; // -1.0 to 1.0
 
-        // We draw 3 labels: Previous (-1), Current (0), Next (1)
-        for (int offset = -1; offset <= 1; offset++)
+        // We draw 5 labels: Previous (-1), Current (0), Next (1)
+        for (int offset = -2; offset <= 2; offset++)
         {
             // 1. CALCULATE Y POSITION
             // If strain is 0.5 (scrolling down), the text slides UP by half a line.
@@ -324,12 +324,33 @@ public class Section9HUD : ILoadingHUD
 
             // 2. CALCULATE OPACITY
             // 1.0 at the exact center (finalY = 0). Fades to 0.0 as it hits the lineHeight distance.
-            double opacity = Math.Clamp(1.0 - Math.Abs(finalY / lineHeight), 0.0, 1.0);
+            //double opacity = Math.Clamp(1.0 - Math.Abs(finalY / lineHeight), 0.0, 1.0);
+            double distance = Math.Abs(finalY / lineHeight);
 
-            if (opacity <= 0.01) continue;
+            // 2. THE NEW OPACITY MATH (100% -> 33% -> 0%)
+            double opacity = 0.0;
+            if (distance <= 1.0)
+            {
+                // Distance 0 to 1: Fades from 1.0 down to 0.33
+                opacity = 1.0 - (distance * (0.67));
+            }
+            else if (distance <= 2.0)
+            {
+                // Distance 1 to 2: Fades from 0.33 down to 0.0
+                opacity = 0.33 - ((distance - 1.0) * 0.33) ;
+            }
+            
+            
+            if (opacity <= 0.11) continue;
 
             // 3. GET THE TEXT (With safe modulo wrapping for infinite scrolling!)
-            int pageIndex = (_camera.CurrentIndex + offset + totalPages) % totalPages;
+            /*int pageIndex = (_camera.CurrentIndex + offset + totalPages) % totalPages;
+            string pageName = _contentLoader.Pages[pageIndex].PageName.ToString().ToUpper();*/
+            int pageIndex = _camera.CurrentIndex + offset;
+
+            // If the page doesn't exist (e.g., above the first page or below the last page), skip it!
+            if (pageIndex < 0 || pageIndex > totalPages-1) continue;
+
             string pageName = _contentLoader.Pages[pageIndex].PageName.ToString().ToUpper();
 
             // 4. FORMAT THE TEXT (Avalonia 11 syntax)

@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="using:System"
+             xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content"
+             xmlns:controls="clr-namespace:Aprilia.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Aprilia.Views.Pages.SkillsPageView"
+             x:DataType="content:SkillsContent">
+    <!-- DEFINE THE REUSABLE UI COMPONENTS ONCE -->
+    <UserControl.Resources>
+        
+        <!-- The "Skill Tag" Design (Neon Border + Text) -->
+        <DataTemplate x:Key="SkillTagTemplate" x:DataType="sys:String">
+            <Border BorderBrush="{DynamicResource CVGradient}" BorderThickness="1" CornerRadius="5" Opacity="" Padding="10,5" Margin="0,0,10,10" Background="{DynamicResource CVGradientReversed}">
+                <!-- Binds directly to the string in your array! -->
+                <TextBlock Text="{Binding}" FontWeight="DemiBold" FontSize="16" />
+            </Border>
+        </DataTemplate>
+        
+        <!-- The WrapPanel Layout -->
+        <ItemsPanelTemplate x:Key="WrapPanelTemplate">
+            <WrapPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        
+    </UserControl.Resources>
+
+    <controls:Datapad>
+        <controls:Datapad.InnerContent>
+            <StackPanel Spacing="10">
+                
+                <!-- 1. CORE STACK -->
+                <TextBlock Text="{Binding CoreSkillsText}" FontSize="36" FontWeight="Bold" Margin="0,0,0,10" />
+                <ItemsControl ItemsSource="{Binding CoreStack}" 
+                              ItemTemplate="{StaticResource SkillTagTemplate}" 
+                              ItemsPanel="{StaticResource WrapPanelTemplate}" />
+
+                <!-- 2. CONCEPTS -->
+                <TextBlock Text="{Binding ConceptsText}" FontSize="24" FontWeight="Bold" Margin="0,15,0,5"/>
+                <ItemsControl ItemsSource="{Binding Concepts}" 
+                              ItemTemplate="{StaticResource SkillTagTemplate}" 
+                              ItemsPanel="{StaticResource WrapPanelTemplate}" />
+
+                <!-- 3. OTHER TECH -->
+                <TextBlock Text="{Binding OtherText}" FontSize="24" FontWeight="Bold" Margin="0,15,0,5"/>
+                <ItemsControl ItemsSource="{Binding OtherTech}" 
+                              ItemTemplate="{StaticResource SkillTagTemplate}" 
+                              ItemsPanel="{StaticResource WrapPanelTemplate}" />
+
+                <!-- 4. INFRASTRUCTURE -->
+                <TextBlock Text="{Binding InfrastructureText}" FontSize="24" FontWeight="Bold" Margin="0,15,0,5"/>
+                <ItemsControl ItemsSource="{Binding Infrastructure}" 
+                              ItemTemplate="{StaticResource SkillTagTemplate}" 
+                              ItemsPanel="{StaticResource WrapPanelTemplate}" />
+
+                <!-- 5. LANGUAGES -->
+                <TextBlock Text="{Binding LanguageText}" FontSize="24" FontWeight="Bold" Margin="0,15,0,5"/>
+                <ItemsControl ItemsSource="{Binding English}" 
+                              ItemTemplate="{StaticResource SkillTagTemplate}" 
+                              ItemsPanel="{StaticResource WrapPanelTemplate}" />
+                
+                <!-- Hungarian Footer -->
+                <TextBlock Text="{Binding HunLang}" FontSize="18" FontStyle="Italic" Margin="0,10,0,0" />
+
+            </StackPanel>
+        </controls:Datapad.InnerContent>
+    </controls:Datapad>
+
+</UserControl>

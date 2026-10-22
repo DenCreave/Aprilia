@@ -3,7 +3,7 @@ namespace Aprilia.Engines.Glance;
 public enum GlancePage
 {
     Intro,
-    AboutMe,
+    Skills,
     Experience,
     Portfolio,
     Dummy,

@@ -19,10 +19,18 @@
             <GradientStop Color="#FF6D3D" Offset="0.0" />
             <GradientStop Color="#FF0090" Offset="1.0" />
         </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CVGradientReversedDarkened" StartPoint="0%,0%" EndPoint="100%,100%">
+            <GradientStop Color="#e36236" Offset="0.0" />
+            <GradientStop Color="#cc0073" Offset="1.0" />
+        </LinearGradientBrush>
         
         <SolidColorBrush x:Key="BorderColor" Color="#fbc88a"/>
+        <SolidColorBrush x:Key="BreakColor" Color=" #ff734c"/>
+        <!--<SolidColorBrush x:Key="DarkPlum" Color=" #1A000B"/>-->
+        <SolidColorBrush x:Key="DarkPlum" Color=" #20000c"/>
         
         <FontFamily x:Key="Phosphor">avares://Aprilia/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
+        <FontFamily x:Key="ExoFontRegular">avares://Aprilia/Assets/Fonts/Exo2-Regular.ttf#Exo 2</FontFamily>
     </Application.Resources>
 
     <Application.DataTemplates>
@@ -31,6 +39,10 @@
 
     <Application.Styles>
         <FluentTheme />
+        <Style Selector="Border.Breaker">
+            <Setter Property="Background" Value="{DynamicResource BreakColor}"/>
+            <Setter Property="Opacity" Value="0.85"/>
+        </Style>
         
         
         <Style Selector="Button.CvButton">
@@ -50,43 +62,36 @@
         <Style Selector="Button.CvButton TextBlock">
             <Setter Property="TextDecorations" Value="{x:Null}"/>
         </Style>
-        
-        <!-- THE FIX: Put the Transitions on the ContentPresenter! -->
-        <Style Selector="Button.CvButton /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Transitions">
-                <Transitions>
-                    <BrushTransition Property="Background" Duration="0:0:0.3" />
-                    <BrushTransition Property="BorderBrush" Duration="0:0:0.3" />
-                </Transitions>
-            </Setter>
-        </Style>
+       
 
 
         <!-- WHAT HAPPENS ON HOVER -->
         <Style Selector="Button.CvButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource CVGradientReversed}"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource DarkPlum}"/>
             <!--<Setter Property="BorderBrush" Value="{DynamicResource CVGradientReversed}"/>-->
             <!--<Setter Property="Foreground" Value="Cyan"/>-->
         </Style>
 
         <!-- WHAT HAPPENS ON CLICK -->
         <Style Selector="Button.CvButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#ff215c"/> <!-- Flashes dark pink -->
-            <Setter Property="Foreground" Value="Black"/>
+            <!--<Setter Property="Background" Value="#ff215c"/> Flashes dark pink -->
+            <Setter Property="Background" Value="{DynamicResource CVGradientReversedDarkened}"/> <!-- Flashes dark pink -->
+            <Setter Property="Foreground" Value="{DynamicResource DarkPlum}"/>
             <!--<Setter Property="BorderBrush" Value="Cyan"/>-->
         </Style>
         
         <Style Selector="TextBlock">
             <Setter Property="FontSize" Value="24"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource DarkPlum}"/>
+            <!--<Setter Property="Foreground" Value="Green"/>-->
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         
         <Style Selector="TextBlock.Icon">
             <Setter Property="FontFamily" Value="{StaticResource Phosphor}"/>
             <Setter Property="FontSize" Value="24"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource DarkPlum}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
