@@ -1,3 +1,5 @@
 *.js linguist-vendored
 *.svg linguist-generated=true
 *.svg -diff
+*.svg binary
+Assets/** linguist-vendored
