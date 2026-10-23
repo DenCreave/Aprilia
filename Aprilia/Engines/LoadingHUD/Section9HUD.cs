@@ -35,6 +35,7 @@ public class Section9HUD : ILoadingHUD
     private double GAP = 5.0;
     private double GAP_ANGLE;
     private double LENGTHMULTIPLIER = 0.4;
+    private readonly Typeface _rolodexTypeface;
 
     public Section9HUD(CameraState camera,
         GlanceContentLoader contentLoader,
@@ -142,8 +143,12 @@ public class Section9HUD : ILoadingHUD
         _animatrixController.Rotate(_baseHexagon.UniqueProps.HexMidLeft2TrapTopRight, _fullTrapezoidPenalty.UniqueProps.HexMidLeft2TrapTopRight, targetRotationPenalty);
         _animatrixController.Rotate(thinnedBotLeft, _fullTrapezoidPenalty.UniqueProps.HexBotLeft2TrapBotRight, targetRotationPenalty);
         _fullTrapezoidPenalty.UniqueProps.Extrusion = 1.0;
+
         
-        
+        var customFont = new FontFamily("avares://Aprilia/Assets/Fonts/Tapestry-Regular.ttf#Tapestry");
+        //1var customFont = new FontFamily("avares://Aprilia/Assets/Fonts/CourierPrime-Regular.ttf#Courier Prime");
+        _rolodexTypeface = new Typeface(customFont, FontStyle.Normal, FontWeight.Normal);
+
         
     }
 
@@ -354,12 +359,12 @@ public class Section9HUD : ILoadingHUD
             string pageName = _contentLoader.Pages[pageIndex].PageName.ToString().ToUpper();
 
             // 4. FORMAT THE TEXT (Avalonia 11 syntax)
-            var typeface = new Typeface("sans-serif", FontStyle.Normal, FontWeight.Bold);
+            //var typeface = new Typeface("sans-serif", FontStyle.Normal, FontWeight.Bold);
             var formattedText = new FormattedText(
                 pageName,
                 System.Globalization.CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
-                typeface,
+                _rolodexTypeface,
                 16, // Font size
                 _hexagonBrush // Cyan text! lol no.
             );
