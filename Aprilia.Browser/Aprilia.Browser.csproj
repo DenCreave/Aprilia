@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />
     <PackageReference Include="BouncyCastle.Cryptography" />
+    <PackageReference Include="Svg.Controls.Avalonia" />
   </ItemGroup>
 
   <ItemGroup>

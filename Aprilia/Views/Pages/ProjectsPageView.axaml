@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Aprilia.Controls"
+             xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content.Templates"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:content1="clr-namespace:Aprilia.Engines.Glance.Content"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Aprilia.Views.Pages.ProjectsPageView"
+             x:DataType="content1:ProjectsContent">
+    <controls:Datapad>
+        <controls:Datapad.InnerContent>
+            <!-- <StackPanel Spacing="20"> -->
+            <StackPanel>
+                <!-- <TextBlock Text="{Binding Headline}" FontSize="48" Foreground="Cyan" FontWeight="Bold" HorizontalAlignment="Center" /> -->
+                <!-- <Border Height="2" Background="#33FFFFFF" Margin="0,0,0,20" /> -->
+
+                <!-- LOOP THROUGH ALL PROJECTS -->
+                <ItemsControl ItemsSource="{Binding  Projects}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type content:ProjectItem}">
+
+                            <!-- THE PROJECT CONTAINER -->
+                            <StackPanel Spacing="15" Margin="0,0,0,0">
+
+                                <!-- ROW 1: TITLE -->
+                                <TextBlock Text="{Binding Title}" FontSize="32" FontWeight="Bold" />
+
+                                <!-- ROW 2: 30/70 SPLIT (QR & DESCRIPTION) -->
+                                <Grid ColumnDefinitions="3*, 7*">
+                                    <!-- 30%: QR Code -->
+                                    <StackPanel Grid.Column="0"  HorizontalAlignment="Center" >
+
+
+                                        <Border Margin="12" Background="Transparent"
+                                                ClipToBounds="True" VerticalAlignment="Top" Tapped="OnQrTapped">
+                                            <Svg Path="{Binding QRPath}" Stretch="UniformToFill" />
+                                        </Border>
+                                        <TextBlock TextAlignment="Center" HorizontalAlignment="Center" FontStyle="Italic" 
+                                                   Background="Transparent" Tapped="OnQrTapped" Margin="12" 
+                                                   Text="{Binding Footnote}" TextWrapping="Wrap" FontSize="12"/> 
+                                    </StackPanel>
+                                    <!-- 70%: Description -->
+                                    <TextBlock VerticalAlignment="Top" Grid.Column="1" Margin="12,0,0,0" Text="{Binding Description}"
+                                               TextWrapping="Wrap"  />
+                                </Grid>
+
+                                <!-- ROW 3: TECH STACK TAGS -->
+                                <ItemsControl ItemsSource="{Binding TechStack}"
+                                              ItemTemplate="{StaticResource SkillTagTemplate}"
+                                              ItemsPanel="{StaticResource WrapPanelTemplate}"
+                                              Margin="0,10,0,0" />
+
+                                <!-- Separator between projects -->
+                                <Border Height="3" Background="{DynamicResource BreakColor}" Margin="0,20,0,35" />
+
+                            </StackPanel>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </controls:Datapad.InnerContent>
+    </controls:Datapad>
+</UserControl>

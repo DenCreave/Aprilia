@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="BouncyCastle.Cryptography" />
+    <PackageReference Include="Svg.Controls.Avalonia" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,8 +4,8 @@ public enum GlancePage
 {
     Intro,
     Skills,
+    Projects,
     Experience,
-    Portfolio,
     Dummy,
     Disabled,
     Void

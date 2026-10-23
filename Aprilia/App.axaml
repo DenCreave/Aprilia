@@ -1,6 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Aprilia"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:Class="Aprilia.App"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -31,6 +32,21 @@
         
         <FontFamily x:Key="Phosphor">avares://Aprilia/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
         <FontFamily x:Key="ExoFontRegular">avares://Aprilia/Assets/Fonts/Exo2-Regular.ttf#Exo 2</FontFamily>
+        
+        
+        
+        <!-- The "Skill Tag" Design (Neon Border + Text) -->
+        <DataTemplate x:Key="SkillTagTemplate" x:DataType="sys:String">
+            <Border BorderBrush="{DynamicResource CVGradient}" BorderThickness="1" CornerRadius="5" Opacity="" Padding="10,5" Margin="0,0,10,10" Background="{DynamicResource CVGradientReversed}">
+                <!-- Binds directly to the string in your array! -->
+                <TextBlock Text="{Binding}" FontWeight="DemiBold" FontSize="16" />
+            </Border>
+        </DataTemplate>
+        
+        <!-- The WrapPanel Layout -->
+        <ItemsPanelTemplate x:Key="WrapPanelTemplate">
+            <WrapPanel Orientation="Horizontal" />
+        </ItemsPanelTemplate>
     </Application.Resources>
 
     <Application.DataTemplates>

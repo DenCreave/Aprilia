@@ -20,6 +20,7 @@
     <PackageReference Include="BouncyCastle.Cryptography" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Svg.Controls.Avalonia" />
   </ItemGroup>
 
   <ItemGroup>
