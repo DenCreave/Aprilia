@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:content="clr-namespace:Aprilia.Engines.Glance.Content"
+             xmlns:controls="clr-namespace:Aprilia.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Aprilia.Views.Pages.VisionPageView"
+             x:DataType="content:VisionContent">
+    <controls:Datapad>
+        <controls:Datapad.InnerContent>
+            
+        </controls:Datapad.InnerContent>
+    </controls:Datapad>
+</UserControl>

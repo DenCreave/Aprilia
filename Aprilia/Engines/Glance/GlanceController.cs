@@ -21,7 +21,7 @@ public sealed class GlanceController
     
     public double TicksRequired { get; private set; } = 3.0; 
     public readonly int BaseCost = 5;
-    public readonly int PenaltyCost = 7;
+    public readonly int PenaltyCost = 8;
     public readonly TimeSpan InactiveDelay = TimeSpan.FromMilliseconds(500);
 
     private readonly int _idleDecayDelayMs = 1500; 

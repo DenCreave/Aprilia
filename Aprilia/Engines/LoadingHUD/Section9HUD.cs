@@ -31,10 +31,12 @@ public class Section9HUD : ILoadingHUD
     private readonly TrapezoidShape _fullTrapezoidBase;    // e.g. for 3 nodes
     private readonly TrapezoidShape _fullTrapezoidPenalty; // e.g. for 5 nodes
     
-    private readonly double RADIUS = 50;
+    private readonly double RADIUS = 65;
     private double GAP = 5.0;
     private double GAP_ANGLE;
     private double LENGTHMULTIPLIER = 0.4;
+    private double _lineHeight = 26.0;
+    private double _fontSize = 18;
     private readonly Typeface _rolodexTypeface;
 
     public Section9HUD(CameraState camera,
@@ -317,7 +319,7 @@ public class Section9HUD : ILoadingHUD
         int totalPages = _contentLoader.Pages.Count;
         if (totalPages == 0) return;
 
-        double lineHeight = 26.0; // How far apart the words are
+        ; // How far apart the words are
         double strain = _camera.StrainProgress; // -1.0 to 1.0
 
         // We draw 5 labels: Previous (-1), Current (0), Next (1)
@@ -325,12 +327,12 @@ public class Section9HUD : ILoadingHUD
         {
             // 1. CALCULATE Y POSITION
             // If strain is 0.5 (scrolling down), the text slides UP by half a line.
-            double finalY = (offset * lineHeight) - (strain * lineHeight);
+            double finalY = (offset * _lineHeight) - (strain * _lineHeight);
 
             // 2. CALCULATE OPACITY
-            // 1.0 at the exact center (finalY = 0). Fades to 0.0 as it hits the lineHeight distance.
-            //double opacity = Math.Clamp(1.0 - Math.Abs(finalY / lineHeight), 0.0, 1.0);
-            double distance = Math.Abs(finalY / lineHeight);
+            // 1.0 at the exact center (finalY = 0). Fades to 0.0 as it hits the _lineHeight distance.
+            //double opacity = Math.Clamp(1.0 - Math.Abs(finalY / _lineHeight), 0.0, 1.0);
+            double distance = Math.Abs(finalY / _lineHeight);
 
             // 2. THE NEW OPACITY MATH (100% -> 33% -> 0%)
             double opacity = 0.0;
@@ -365,7 +367,7 @@ public class Section9HUD : ILoadingHUD
                 System.Globalization.CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 _rolodexTypeface,
-                16, // Font size
+                _fontSize, // Font size
                 _hexagonBrush // Cyan text! lol no.
             );
 

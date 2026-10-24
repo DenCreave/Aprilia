@@ -5,7 +5,10 @@ public enum GlancePage
     Intro,
     Skills,
     Projects,
-    Experience,
+    Education,
+    Work,
+    Vision,
+    Character,
     Dummy,
     Disabled,
     Void
