@@ -13,9 +13,11 @@ public partial class LandingCVView : UserControl
     private DateTime _lastGestureTime = DateTime.MinValue;
     private Point _lastTouchPoint;
     private bool _isTouching;
+    private GlanceController? _glanceController;
     public LandingCVView()
     {
         InitializeComponent();
+        _glanceController = App.Services.GetRequiredService<GlanceController>();
     }
 
     public void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -26,18 +28,18 @@ public partial class LandingCVView : UserControl
 
     private void RouteScroll(double deltaY)
     {
-        var glanceController = App.Services.GetRequiredService<GlanceController>();
-        glanceController.HandleScroll(deltaY);
+       // var glanceController = App.Services.GetRequiredService<GlanceController>();
+        _glanceController.HandleScroll(deltaY);
     }
 
     public void OnScrollGesture(object? sender, ScrollGestureEventArgs e)
     {
-        /*if ((DateTime.Now - _lastGestureTime).TotalMilliseconds < 33) 
+        if ((DateTime.Now - _lastGestureTime).TotalMilliseconds < 16) 
         {
             e.Handled = true;
             return;
         }
-        _lastGestureTime = DateTime.Now;*/
+        _lastGestureTime = DateTime.Now;
 
         RouteScroll(-e.Delta.Y); 
         e.Handled = true;
@@ -62,8 +64,8 @@ public partial class LandingCVView : UserControl
             double pixelDeltaY = currentPoint.Y - _lastTouchPoint.Y;
             _lastTouchPoint = currentPoint;
 
-            var glanceController = App.Services.GetRequiredService<GlanceController>();
-            glanceController.HandleMobile(pixelDeltaY);
+            //var glanceController = App.Services.GetRequiredService<GlanceController>();
+            _glanceController.HandleMobile(pixelDeltaY);
         }
     }
     
