@@ -31,7 +31,10 @@
                 at top or bottom of the scrollviewer. ScrollChanged="OnScrollChanged"-->
                 <!--<ScrollViewer x:Name="PageScrollViewer" ScrollChanged="OnScrollChanged"> -->
                 <!-- <ScrollViewer x:Name="PageScrollViewer" IsScrollInertiaEnabled="False" > -->
-                <ScrollViewer x:Name="PageScrollViewer" IsScrollChainingEnabled="False" >
+                <ScrollViewer x:Name="PageScrollViewer" 
+                              ScrollChanged="OnScrollChanged" 
+                              SizeChanged="OnSizeChanged"
+                              IsScrollChainingEnabled="False" >
                     <ContentPresenter Content="{Binding InnerContent, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" /> 
                 </ScrollViewer>
                 

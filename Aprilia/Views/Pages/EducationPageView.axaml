@@ -21,13 +21,13 @@
                                 
                                     <TextBlock  Text="{Binding Title}" FontSize="28"
                                                 FontWeight="Bold" TextWrapping="Wrap" />
-                                    <TextBlock  Text="{Binding DateRange}" FontSize="18"
-                                                FontStyle="Italic" FontWeight="DemiBold"
-                                                VerticalAlignment="Center" />
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding DateRange}" FontSize="18"
+                                               FontStyle="Italic" FontWeight="DemiBold"
+                                               VerticalAlignment="Center" />
                                 
 
                                 <!-- Place -->
-                                <TextBlock Text="{Binding Place}" FontStyle="Italic" FontWeight="DemiBold" TextWrapping="Wrap"/>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Place}" FontStyle="Italic" FontWeight="DemiBold"/>
 
                                 <!-- Description -->
                                 <TextBlock Text="{Binding Description}" 

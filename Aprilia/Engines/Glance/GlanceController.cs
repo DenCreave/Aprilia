@@ -49,7 +49,7 @@ public sealed class GlanceController
         _isDecaying = false;
         _lastScrollTime = DateTime.Now;
         var currentPage = _contentLoader.Pages[State.CurrentFocus];
-        Console.WriteLine(deltaY+" delta val");
+        Console.WriteLine(deltaY+$" delta val UND at bottom:{currentPage.IsAtBottom}");
         if (deltaY < 0 && !currentPage.IsAtBottom) return; 
         if (deltaY > 0 && !currentPage.IsAtTop) return;
         

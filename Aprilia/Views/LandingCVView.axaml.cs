@@ -19,11 +19,25 @@ public partial class LandingCVView : UserControl
         InitializeComponent();
         _glanceController = App.Services.GetRequiredService<GlanceController>();
     }
+    
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel != null)
+        {
+            // TUNNEL: Catch the scroll BEFORE the ScrollViewer gets it!
+            topLevel.AddHandler(InputElement.PointerWheelChangedEvent, OnPointerWheelChanged, RoutingStrategies.Tunnel);
+            topLevel.AddHandler(InputElement.ScrollGestureEvent, OnScrollGesture, RoutingStrategies.Tunnel);
+        }
+    }
 
     public void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         RouteScroll(e.Delta.Y);
-        e.Handled = true; 
+        // DO NOT set e.Handled = true here! Let the ScrollViewer have the event if we didn't flip the page!
+        //e.Handled = true; 
     }
 
     private void RouteScroll(double deltaY)
@@ -42,7 +56,8 @@ public partial class LandingCVView : UserControl
         _lastGestureTime = DateTime.Now;
 
         RouteScroll(-e.Delta.Y); 
-        e.Handled = true;
+        // DO NOT set e.Handled = true here! Let the ScrollViewer have the event if we didn't flip the page!
+        //e.Handled = true;
 
     }
     

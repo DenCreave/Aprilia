@@ -10,7 +10,7 @@
     <controls:Datapad>
         <controls:Datapad.InnerContent>
             <StackPanel Spacing="40">
-                <TextBlock Text="{Binding Title}" FontSize="48" FontWeight="Bold" />
+                <TextBlock Text="{Binding Title}" TextWrapping="Wrap" FontSize="48" FontWeight="Bold" />
                 <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
                 
                 <Border Height="3" Background="{DynamicResource BreakColor}" Margin="0,20,0,35" />

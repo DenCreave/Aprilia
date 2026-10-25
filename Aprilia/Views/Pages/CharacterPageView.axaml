@@ -11,7 +11,7 @@
         <controls:Datapad.InnerContent>
             <StackPanel Spacing="30">
                 
-                <TextBlock Text="{Binding Title}" FontSize="48" FontWeight="Bold" Margin="0,0,0,10" />
+                <TextBlock Text="{Binding Title}" FontSize="48" TextWrapping="Wrap" FontWeight="Bold" Margin="0,0,0,10" />
                 
                 <TextBlock Text="{Binding P1_Intro}" TextWrapping="Wrap" />
                 <TextBlock Text="{Binding P2_Anime}" TextWrapping="Wrap" />

@@ -22,14 +22,26 @@ public partial class Datapad : UserControl
         InitializeComponent();
         
     }
+    private void OnScrollChanged(object? sender, ScrollChangedEventArgs e) => UpdateScrollState();
+    private void OnSizeChanged(object? sender, SizeChangedEventArgs e) => UpdateScrollState();
 
-    // The Safety valve (for scroll) Logic lives here permanently!
-    private void OnScrollChanged(object? sender, ScrollChangedEventArgs e)
+
+    private void UpdateScrollState()
     {
-        if (sender is ScrollViewer sv && DataContext is IGlanceContent content)
+        if (PageScrollViewer != null && DataContext is IGlanceContent content)
         {
-            content.IsAtTop = sv.Offset.Y <= 0;
-            content.IsAtBottom = sv.Offset.Y >= (sv.Extent.Height - sv.Viewport.Height - 1.0);
+            // If the text is shorter than the screen, it doesn't need to scroll!
+            if (PageScrollViewer.Extent.Height <= PageScrollViewer.Viewport.Height)
+            {
+                content.IsAtTop = true;
+                content.IsAtBottom = true;
+            }
+            else
+            {
+                // -1.0 buffer for floating point rounding errors
+                content.IsAtTop = PageScrollViewer.Offset.Y <= 0;
+                content.IsAtBottom = PageScrollViewer.Offset.Y >= (PageScrollViewer.Extent.Height - PageScrollViewer.Viewport.Height - 1.0);
+            }
         }
     }
 
