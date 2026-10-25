@@ -10,6 +10,7 @@ namespace Aprilia.Views;
 
 public partial class LandingCVView : UserControl
 {
+    private DateTime _lastGestureTime = DateTime.MinValue;
     public LandingCVView()
     {
         InitializeComponent();
@@ -23,8 +24,16 @@ public partial class LandingCVView : UserControl
 
     public void OnScrollGesture(object? sender, ScrollGestureEventArgs e)
     {
-        RouteScroll(-e.Delta.Y*0.1);
+        if ((DateTime.Now - _lastGestureTime).TotalMilliseconds < 33) 
+        {
+            e.Handled = true;
+            return;
+        }
+        _lastGestureTime = DateTime.Now;
+
+        RouteScroll(e.Delta.Y); 
         e.Handled = true;
+
     }
 
     private void RouteScroll(double deltaY)

@@ -43,7 +43,7 @@ public sealed class GlanceController
 
     public void HandleScroll(double deltaY)
     {
-        if ((DateTime.Now - _lastFlipTime).TotalMilliseconds < 100) return;
+        // if ((DateTime.Now - _lastFlipTime).TotalMilliseconds < 100) return;
         
         
         _isDecaying = false;
