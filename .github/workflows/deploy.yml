@@ -25,10 +25,7 @@ jobs:
       run: dotnet publish Aprilia.Browser/Aprilia.Browser.csproj -c Release -o release_output
 
     - name: Deploy to Cloudflare Pages
-      uses: cloudflare/wrangler-action@v3
-      with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        projectName: 'juliusdeer' # MUST match the name you gave it in Cloudflare!
-        directory: 'release_output/wwwroot' # This is where Avalonia puts the final website files
-        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      run: npx wrangler@latest pages deploy release_output/wwwroot --project-name=juliusdeer
