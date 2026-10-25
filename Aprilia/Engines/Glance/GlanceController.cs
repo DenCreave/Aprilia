@@ -21,8 +21,8 @@ public sealed class GlanceController
     private double _progressedTicks = 0;
     
     public double TicksRequired { get; private set; } = 3.0; 
-    public readonly int BaseCost = 3;
-    public readonly int PenaltyCost = 5;
+    public readonly int BaseCost = 5;
+    public readonly int PenaltyCost = 8;
     public readonly TimeSpan InactiveDelay = TimeSpan.FromMilliseconds(500);
 
     private readonly int _idleDecayDelayMs = 1500; 
@@ -53,12 +53,34 @@ public sealed class GlanceController
         if (deltaY < 0 && !currentPage.IsAtBottom) return; 
         if (deltaY > 0 && !currentPage.IsAtTop) return;
         
-        //double tickAmount = -deltaY; 
-        double tickAmount = Math.Clamp(-deltaY, -1.2, 1.2); 
+        double tickAmount = -deltaY; 
+        //double tickAmount = Math.Clamp(-deltaY, -1.2, 1.2); 
         _targetTicks += tickAmount;
         if (State.CurrentFocus == 0 && _targetTicks < 0) _targetTicks = 0;
         if (State.CurrentFocus == State.MaxPages - 1 && _targetTicks > 0) _targetTicks = 0;
         Console.WriteLine($"delta Y: {deltaY}\n Tagerticks {_targetTicks}");
+    }
+
+    public void HandleMobile(double pixelDeltaY)
+    {
+        _lastScrollTime = DateTime.Now;
+        var currentPage = _contentLoader.Pages[State.CurrentFocus];
+
+        // Note: Swiping UP on a screen gives a negative pixelDeltaY. 
+        if (pixelDeltaY < 0 && !currentPage.IsAtBottom) return; 
+        if (pixelDeltaY > 0 && !currentPage.IsAtTop) return;
+
+        // convert pixels to Ticks (e.g., dragging 40 pixels = 1 tick of strain)
+        double tickAmount = -pixelDeltaY / 40.0; 
+
+
+        tickAmount = Math.Clamp(tickAmount, -1.5, 1.5);
+
+        _targetTicks += tickAmount;
+
+        if (State.CurrentFocus == 0 && _targetTicks < 0) _targetTicks = 0;
+        if (State.CurrentFocus == State.MaxPages - 1 && _targetTicks > 0) _targetTicks = 0;
+
     }
 
 

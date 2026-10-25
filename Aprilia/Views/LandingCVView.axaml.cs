@@ -11,6 +11,8 @@ namespace Aprilia.Views;
 public partial class LandingCVView : UserControl
 {
     private DateTime _lastGestureTime = DateTime.MinValue;
+    private Point _lastTouchPoint;
+    private bool _isTouching;
     public LandingCVView()
     {
         InitializeComponent();
@@ -20,6 +22,12 @@ public partial class LandingCVView : UserControl
     {
         RouteScroll(e.Delta.Y);
         e.Handled = true; 
+    }
+
+    private void RouteScroll(double deltaY)
+    {
+        var glanceController = App.Services.GetRequiredService<GlanceController>();
+        glanceController.HandleScroll(deltaY);
     }
 
     public void OnScrollGesture(object? sender, ScrollGestureEventArgs e)
@@ -35,10 +43,36 @@ public partial class LandingCVView : UserControl
         e.Handled = true;
 
     }
-
-    private void RouteScroll(double deltaY)
+    
+    public void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        var glanceController = App.Services.GetRequiredService<GlanceController>();
-        glanceController.HandleScroll(deltaY);
+        if (e.Pointer.Type == PointerType.Touch)
+        {
+            _lastTouchPoint = e.GetPosition(this);
+            _isTouching = true;
+        }
     }
+    
+    public void OnPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (_isTouching && e.Pointer.Type == PointerType.Touch)
+        {
+            var currentPoint = e.GetPosition(this);
+            
+            double pixelDeltaY = currentPoint.Y - _lastTouchPoint.Y;
+            _lastTouchPoint = currentPoint;
+
+            var glanceController = App.Services.GetRequiredService<GlanceController>();
+            glanceController.HandleMobile(pixelDeltaY);
+        }
+    }
+    
+    public void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (e.Pointer.Type == PointerType.Touch)
+        {
+            _isTouching = false;
+        }
+    }
+
 }
