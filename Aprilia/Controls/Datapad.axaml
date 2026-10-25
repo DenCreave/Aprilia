@@ -30,7 +30,7 @@
                 <!-- that function doesnt let scrolling pages if we arent 
                 at top or bottom of the scrollviewer. ScrollChanged="OnScrollChanged"-->
                 <!--<ScrollViewer x:Name="PageScrollViewer" ScrollChanged="OnScrollChanged"> -->
-                <ScrollViewer x:Name="PageScrollViewer" >
+                <ScrollViewer x:Name="PageScrollViewer" IsScrollInertiaEnabled="False" >
                     <ContentPresenter Content="{Binding InnerContent, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" /> 
                 </ScrollViewer>
                 
