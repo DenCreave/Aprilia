@@ -1,0 +1,34 @@
+name: Deploy Aprilia to Cloudflare Pages
+
+# This tells GitHub to run this script every time you push to the master/main branch
+on:
+  push:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Install WASM Tools Workload
+      run: dotnet workload install wasm-tools
+
+    - name: Publish Avalonia WebAssembly
+      # This compiles the engine in Release mode (AOT) for maximum performance
+      run: dotnet publish Aprilia.Browser/Aprilia.Browser.csproj -c Release -o release_output
+
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: 'juliusdeer' # MUST match the name you gave it in Cloudflare!
+        directory: 'release_output/wwwroot' # This is where Avalonia puts the final website files
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
