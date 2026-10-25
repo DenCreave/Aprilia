@@ -26,7 +26,4 @@
   <ItemGroup>
     <Folder Include="Engines\SpanningTree\" />
   </ItemGroup>
-  <ItemGroup>
-    <TrimmerRootAssembly Include="Aprilia" />
-  </ItemGroup>
 </Project>

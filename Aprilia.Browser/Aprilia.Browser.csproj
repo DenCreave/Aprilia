@@ -19,4 +19,7 @@
   <ItemGroup>
     <StaticWebAssetFingerprintPattern Include="JS" Pattern="*.js" Expression="#[.{fingerprint}]!" />
   </ItemGroup>
+  <ItemGroup>
+    <TrimmerRootAssembly Include="Aprilia" />
+  </ItemGroup>
 </Project>
