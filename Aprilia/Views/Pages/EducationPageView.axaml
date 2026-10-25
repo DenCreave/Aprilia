@@ -46,7 +46,6 @@
                     </ItemsControl.ItemTemplate>
 
                 </ItemsControl>
-
             </StackPanel>
 
         </controls:Datapad.InnerContent>

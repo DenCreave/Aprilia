@@ -18,6 +18,7 @@ public class EncVault
         _cache["flipflap"] = ImageDecryptor.LoadEncImage("Assets/Metia/flipflap");
         _cache["outside"] = ImageDecryptor.LoadEncImage("Assets/Metia/outside");
         _cache["easter_egg"] = ImageDecryptor.LoadEncImage("Assets/Metia/easter_egg");
+        _cache["sky"] = ImageDecryptor.LoadEncImage("Assets/Metia/sky");
         timer.Stop();
         Console.WriteLine($"total ellapsed timer for decryption: {timer.ElapsedMilliseconds} ms");
     }

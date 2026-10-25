@@ -57,7 +57,10 @@
                         Content="Download CV" 
                         HorizontalAlignment="Center"
                         Click="OnDownloadClicked"/>
+                
+                <Border Height="3" Background="{DynamicResource BreakColor}" Margin="0,20,0,35" />
             </StackPanel>
+            
 
         </Grid>
             

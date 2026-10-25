@@ -9,7 +9,26 @@
              x:DataType="content:CharacterContent">
     <controls:Datapad>
         <controls:Datapad.InnerContent>
-            
+            <StackPanel Spacing="30">
+                
+                <TextBlock Text="{Binding Title}" FontSize="48" FontWeight="Bold" Margin="0,0,0,10" />
+                
+                <TextBlock Text="{Binding P1_Intro}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding P2_Anime}" TextWrapping="Wrap" />
+                
+                <Grid RowDefinitions="*,Auto" Margin="0,0,0,10">
+                    <TextBlock Grid.Row="0" Text="{Binding P3_Skydiving}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                    <Border Grid.Row="1" CornerRadius="10" ClipToBounds="True">
+                        <Image Source="{Binding ThroughTheSky}" Stretch="UniformToFill" />
+                    </Border>
+                </Grid>
+                
+                
+                <TextBlock Text="{Binding P4_Community}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding P5_Outro}" TextWrapping="Wrap" />
+                
+                <Border Height="3" Background="{DynamicResource BreakColor}" Margin="0,20,0,35" />
+            </StackPanel>
         </controls:Datapad.InnerContent>
     </controls:Datapad>
 </UserControl>
