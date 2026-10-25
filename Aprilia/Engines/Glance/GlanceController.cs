@@ -72,7 +72,7 @@ public sealed class GlanceController
         if (pixelDeltaY > 0 && !currentPage.IsAtTop) return;
 
         // convert pixels to Ticks (e.g., dragging 40 pixels = 1 tick of strain)
-        double tickAmount = -pixelDeltaY / 25.0; 
+        double tickAmount = -pixelDeltaY / 15.0; 
 
 
         tickAmount = Math.Clamp(tickAmount, -1.5, 1.5);

@@ -34,11 +34,11 @@ public partial class LandingCVView : UserControl
 
     public void OnScrollGesture(object? sender, ScrollGestureEventArgs e)
     {
-        if ((DateTime.Now - _lastGestureTime).TotalMilliseconds < 16) 
+        /*if ((DateTime.Now - _lastGestureTime).TotalMilliseconds < 16) 
         {
             e.Handled = true;
             return;
-        }
+        }*/
         _lastGestureTime = DateTime.Now;
 
         RouteScroll(-e.Delta.Y); 
