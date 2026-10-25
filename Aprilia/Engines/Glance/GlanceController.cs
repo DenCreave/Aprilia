@@ -14,14 +14,15 @@ public sealed class GlanceController
     
     private readonly DispatcherTimer _physicsTimer;
     private DateTime _lastScrollTime;
+    private DateTime _lastFlipTime; 
     
     // camera weight props
     private double _targetTicks = 0;
     private double _progressedTicks = 0;
     
     public double TicksRequired { get; private set; } = 3.0; 
-    public readonly int BaseCost = 5;
-    public readonly int PenaltyCost = 8;
+    public readonly int BaseCost = 3;
+    public readonly int PenaltyCost = 5;
     public readonly TimeSpan InactiveDelay = TimeSpan.FromMilliseconds(500);
 
     private readonly int _idleDecayDelayMs = 1500; 
@@ -37,12 +38,14 @@ public sealed class GlanceController
         State = state;
         _contentLoader = contentLoader;
         State.MaxPages = contentLoader.Pages.Count;
-        
-
+        _lastFlipTime= DateTime.Now;
     }
 
     public void HandleScroll(double deltaY)
     {
+        if ((DateTime.Now - _lastFlipTime).TotalMilliseconds < 100) return;
+        
+        
         _isDecaying = false;
         _lastScrollTime = DateTime.Now;
         var currentPage = _contentLoader.Pages[State.CurrentFocus];
@@ -50,7 +53,8 @@ public sealed class GlanceController
         if (deltaY < 0 && !currentPage.IsAtBottom) return; 
         if (deltaY > 0 && !currentPage.IsAtTop) return;
         
-        double tickAmount = -deltaY; 
+        //double tickAmount = -deltaY; 
+        double tickAmount = Math.Clamp(-deltaY, -1.2, 1.2); 
         _targetTicks += tickAmount;
         if (State.CurrentFocus == 0 && _targetTicks < 0) _targetTicks = 0;
         if (State.CurrentFocus == State.MaxPages - 1 && _targetTicks > 0) _targetTicks = 0;
@@ -166,7 +170,7 @@ public sealed class GlanceController
         newPage.HideAt = null;       // Cancel any death timers
         newPage.ZIndex = 1;
         _fadingPages.Remove(newPage); // Remove from GC watch list (in case user scrolled back quickly)
-        
+        _lastFlipTime = DateTime.Now;
 
     }
     

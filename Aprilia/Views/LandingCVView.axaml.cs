@@ -23,7 +23,7 @@ public partial class LandingCVView : UserControl
 
     public void OnScrollGesture(object? sender, ScrollGestureEventArgs e)
     {
-        RouteScroll(e.Delta.Y);
+        RouteScroll(-e.Delta.Y*0.1);
         e.Handled = true;
     }
 
