@@ -7,28 +7,35 @@
              x:DataType="vm:LandingCVViewModel">
 
 
-    <Grid Background="Transparent"  
-          
+    <Grid Background="Transparent"
+
           PointerPressed="OnPointerPressed"
           PointerMoved="OnPointerMoved"
           PointerReleased="OnPointerReleased">
         <!-- Animated bg -->
         <ui:SpanningTreeRenderer STC="{Binding Stc}" STT="{Binding Stt}" />
         <!-- Custom content stacker -->
-        <ItemsControl ItemsSource="{Binding ContentLoader.Pages}">
-            <ItemsControl.Styles>
-                <!-- THE FIX: Tell the compiler this style applies to your Content interface! -->
-                <Style Selector="ContentPresenter" x:DataType="glance:IGlanceContent">
-                    <Setter Property="ZIndex" Value="{Binding PageOpacity}" />
-                </Style>
-            </ItemsControl.Styles>
+        <LayoutTransformControl>
+            <LayoutTransformControl.LayoutTransform>
+                <!-- Binds directly to the UiScale in LandingCVViewModel -->
+                <ScaleTransform ScaleX="{Binding UiScale}" ScaleY="{Binding UiScale}" />
+            </LayoutTransformControl.LayoutTransform>
 
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid /> <!-- Stacks pages on top of each other -->
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+            <ItemsControl ItemsSource="{Binding ContentLoader.Pages}">
+                <ItemsControl.Styles>
+                    <!-- THE FIX: Tell the compiler this style applies to your Content interface! -->
+                    <Style Selector="ContentPresenter" x:DataType="glance:IGlanceContent">
+                        <Setter Property="ZIndex" Value="{Binding PageOpacity}" />
+                    </Style>
+                </ItemsControl.Styles>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid /> <!-- Stacks pages on top of each other -->
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </LayoutTransformControl>
         <glance:GlanceRenderer />
     </Grid>
 </UserControl>

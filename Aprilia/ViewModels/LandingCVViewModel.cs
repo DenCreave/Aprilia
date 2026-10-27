@@ -12,6 +12,10 @@ public partial class LandingCVViewModel(
     TwinRenderMediator mediator,
     GlanceContentLoader contentLoader) : ViewModelBase
 {
+    
+    [ObservableProperty] 
+    private double _uiScale = 1.0; // The global scale for the SPA!
+    
     private readonly TwinRenderMediator _mediator = mediator;
     public SpanningTreeController Stc { get; } = stc;
     public SpanningTreeTheme Stt { get; } = stt;

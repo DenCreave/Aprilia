@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Microsoft.Extensions.DependencyInjection;
 using Aprilia.Engines.Glance;
+using Aprilia.ViewModels;
 
 namespace Aprilia.Views;
 
@@ -14,6 +15,7 @@ public partial class LandingCVView : UserControl
     private Point _lastTouchPoint;
     private bool _isTouching;
     private GlanceController? _glanceController;
+    
     public LandingCVView()
     {
         InitializeComponent();
@@ -27,9 +29,38 @@ public partial class LandingCVView : UserControl
         var topLevel = TopLevel.GetTopLevel(this);
         if (topLevel != null)
         {
+            // Set initial scale
+            if (DataContext is LandingCVViewModel vm)
+                vm.UiScale = ResponsiveScaler.GetScale(topLevel.Bounds.Width);
+
+            // Listen for window resizes/rotations
+            topLevel.SizeChanged += OnWindowSizeChanged;
+            
             // TUNNEL: Catch the scroll BEFORE the ScrollViewer gets it!
             topLevel.AddHandler(InputElement.PointerWheelChangedEvent, OnPointerWheelChanged, RoutingStrategies.Tunnel);
             topLevel.AddHandler(InputElement.ScrollGestureEvent, OnScrollGesture, RoutingStrategies.Tunnel);
+        }
+    }
+    
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel != null)
+        {
+            topLevel.SizeChanged -= OnWindowSizeChanged;
+            
+            topLevel.RemoveHandler(InputElement.PointerWheelChangedEvent, OnPointerWheelChanged);
+            topLevel.RemoveHandler(InputElement.ScrollGestureEvent, OnScrollGesture);
+        }
+    }
+    
+    private void OnWindowSizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        if (sender is TopLevel topLevel && DataContext is LandingCVViewModel vm)
+        {
+            // Update the global scale whenever the phone rotates!
+            vm.UiScale = ResponsiveScaler.GetScale(topLevel.Bounds.Width);
         }
     }
 

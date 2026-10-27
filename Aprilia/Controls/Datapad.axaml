@@ -35,17 +35,8 @@
                               ScrollChanged="OnScrollChanged"
                               SizeChanged="OnSizeChanged"
                               IsScrollChainingEnabled="False">
-
-                    <LayoutTransformControl>
-                        <LayoutTransformControl.LayoutTransform>
-                            <!-- Binds to the UiScale property we just made in the code-behind! -->
-                            <ScaleTransform
-                                ScaleX="{Binding UiScale, RelativeSource={RelativeSource AncestorType=controls:Datapad}}"
-                                ScaleY="{Binding UiScale, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" />
-                        </LayoutTransformControl.LayoutTransform>
                         <ContentPresenter
                             Content="{Binding InnerContent, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" />
-                    </LayoutTransformControl>
                 </ScrollViewer>
 
             </Border>
