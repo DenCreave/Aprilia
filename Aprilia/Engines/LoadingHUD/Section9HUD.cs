@@ -287,6 +287,9 @@ public class Section9HUD : ILoadingHUD
         
         if (activeNodes <= 0) return;
 
+        
+        double hudScale = ResponsiveScaler.GetScale(screenWidth);
+        
         double angleStep = 360.0 / activeNodes;
         
         // LIVE SCREEN CENTERING
@@ -294,9 +297,19 @@ public class Section9HUD : ILoadingHUD
         double centerY = screenHeight * 0.3;
         
         // Shift the box up and left so (0,0) is perfectly in the middle of it!
-        var effectBounds = new Rect(-centerX, -centerY, screenWidth, screenHeight);
+        //var effectBounds = new Rect(-centerX, -centerY, screenWidth, screenHeight);
+        
+        var effectBounds = new Rect(
+            -centerX / hudScale, 
+            -centerY / hudScale, 
+            screenWidth / hudScale, 
+            screenHeight / hudScale);
+        
+        var masterMatrix = Matrix.CreateScale(hudScale, hudScale) * Matrix.CreateTranslation(centerX, centerY);
 
-        using (context.PushTransform(Matrix.CreateTranslation(centerX, centerY)))
+
+        //using (context.PushTransform(Matrix.CreateTranslation(centerX, centerY)))
+        using (context.PushTransform(masterMatrix))
         {
             DrawShockwaves(context, effectBounds);
             

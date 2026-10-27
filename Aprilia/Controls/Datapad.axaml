@@ -11,33 +11,43 @@
     <Grid Opacity="{Binding PageOpacity}">
         <Grid.Transitions>
             <Transitions>
-                <DoubleTransition Property="Opacity" Duration="0:0:0.5" Easing="CubicEaseOut"/>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.5" Easing="CubicEaseOut" />
             </Transitions>
         </Grid.Transitions>
 
         <!-- THE RESPONSIVE PERCENTAGE GRID -->
         <Grid ColumnDefinitions="3*, 6.8*, 0.2*" RowDefinitions="0.2*, 9.6*, 0.2*">
-            
+
             <!-- The Datapad sits in the middle cell (Row 1, Column 1) -->
             <Border Grid.Row="1" Grid.Column="1"
-                    BorderBrush="{DynamicResource CVGradient}" 
+                    BorderBrush="{DynamicResource CVGradient}"
                     Background="{DynamicResource CVGradientTransparent} "
-                    BorderThickness="3" 
+                    BorderThickness="3"
                     CornerRadius="15"
                     Padding="10"
                     BoxShadow="0 0 20 5 #44FF69B4">
-                
+
                 <!-- that function doesnt let scrolling pages if we arent 
                 at top or bottom of the scrollviewer. ScrollChanged="OnScrollChanged"-->
                 <!--<ScrollViewer x:Name="PageScrollViewer" ScrollChanged="OnScrollChanged"> -->
                 <!-- <ScrollViewer x:Name="PageScrollViewer" IsScrollInertiaEnabled="False" > -->
-                <ScrollViewer x:Name="PageScrollViewer" 
-                              ScrollChanged="OnScrollChanged" 
+                <ScrollViewer x:Name="PageScrollViewer"
+                              ScrollChanged="OnScrollChanged"
                               SizeChanged="OnSizeChanged"
-                              IsScrollChainingEnabled="False" >
-                    <ContentPresenter Content="{Binding InnerContent, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" /> 
+                              IsScrollChainingEnabled="False">
+
+                    <LayoutTransformControl>
+                        <LayoutTransformControl.LayoutTransform>
+                            <!-- Binds to the UiScale property we just made in the code-behind! -->
+                            <ScaleTransform
+                                ScaleX="{Binding UiScale, RelativeSource={RelativeSource AncestorType=controls:Datapad}}"
+                                ScaleY="{Binding UiScale, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" />
+                        </LayoutTransformControl.LayoutTransform>
+                        <ContentPresenter
+                            Content="{Binding InnerContent, RelativeSource={RelativeSource AncestorType=controls:Datapad}}" />
+                    </LayoutTransformControl>
                 </ScrollViewer>
-                
+
             </Border>
         </Grid>
     </Grid>

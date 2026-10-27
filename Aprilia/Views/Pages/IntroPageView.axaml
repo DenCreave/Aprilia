@@ -10,14 +10,18 @@
 
     <controls:Datapad>
         <controls:Datapad.InnerContent>
-            <Grid RowDefinitions="Auto, Auto, *">
-                <Grid Grid.Row="0" ColumnDefinitions="3*,Auto, 7*" HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Border Grid.Column="0" ClipToBounds="True">
-                        <Image Source="{Binding CurrentProfileImage}" Stretch="UniformToFill" Tapped="OnImageTapped" />
+            <StackPanel>
+                <Grid Grid.Row="0" ColumnDefinitions="2.8*,0.4*, 6.8*" >
+                    <Border Grid.Column="0" Grid.Row="0" ClipToBounds="True" CornerRadius="15">
+                        <Image Source="{Binding CurrentProfileImage}" 
+                               Stretch="UniformToFill" Tapped="OnImageTapped" 
+                               Cursor="Hand"/>
                     </Border>
-                    <Border Grid.Column="1" Width="20" Background="Transparent" VerticalAlignment="Stretch" />
-                    <Viewbox Grid.Column="2" StretchDirection="DownOnly" HorizontalAlignment="Left">
-                        <StackPanel Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Spacing="0">
+                    
+                    <Viewbox Grid.Column="2" StretchDirection="DownOnly" 
+                             VerticalAlignment="Top" HorizontalAlignment="Left"
+                             Margin="0,30,0,0">
+                        <StackPanel >
 
                             <TextBlock Text="{Binding Name}" FontSize="34" FontWeight="Bold" />
 
@@ -50,7 +54,8 @@
                     </Viewbox>
                 </Grid>
 
-                <Border Grid.Row="1" Height="5" Classes="Breaker" Margin="0,15" />
+                <!-- <Border Grid.Row="1" Height="5" Classes="Breaker" Margin="0,15" /> -->
+                <Border Height="3" Background="Transparent" Margin="0,20,0,35" />
 
                 <StackPanel Grid.Row="2" Spacing="20">
                     <TextBlock Text="{Binding BriefBoutMe}" TextWrapping="Wrap" />
@@ -64,8 +69,7 @@
                     <Border Height="3" Background="{DynamicResource BreakColor}" Margin="0,20,0,35" />
                 </StackPanel>
 
-
-            </Grid>
+            </StackPanel>
 
         </controls:Datapad.InnerContent>
     </controls:Datapad>
