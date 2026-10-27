@@ -64,7 +64,8 @@
                     <Button Classes="CvButton"
                             Content="Download CV"
                             HorizontalAlignment="Center"
-                            Click="OnDownloadClicked" />
+                            Click="OnDownloadClicked"
+                            Cursor="Hand"/>
 
                     <Border Height="3" Background="{DynamicResource BreakColor}" Margin="0,20,0,35" />
                 </StackPanel>
