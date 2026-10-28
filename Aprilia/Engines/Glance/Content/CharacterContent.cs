@@ -35,12 +35,12 @@ public partial class CharacterContent: ObservableObject, IGlanceContent
                               "I find value in. These values are not always found or seen and I " +
                               "wanted others to see them as well. So I used to live 3 years at the " +
                               "college dormitory, and organized a weekly anime club with a friend. " +
-                              "We'd watch shows and movies, either for repesent something of value " +
+                              "We'd watch shows and movies, either for represents something of value " +
                               "or because something was beautiful or just out of fun. I started this " +
                               "club and led it for 1 semester, only later I've learned that once " +
                               "ive left, 3 years later the club was still ongoing. The guy who " +
                               "overtook after me still organized it after i left. He also let me " +
-                              "know its thanks to me that he started to watch and apreciate anime again. :) <3";
+                              "know its thanks to me that he started to watch and appreciate anime again. :) <3";
     public string P3_Skydiving => "I love adrenalin. I used to ride motorbikes as well " +
                                   "and when i graduated i celebrated by going skydiving twice. " +
                                   "Sadly it was only tandem jumping. but from a 4.4kms altitude, " +
@@ -58,7 +58,7 @@ public partial class CharacterContent: ObservableObject, IGlanceContent
     public string P4_Community => "I also helped organize the freshmen camp at university. The community " +
                                   "both at our faculty and both in the dormitory was valuable. And i " +
                                   "always made sure to pass on the value I've been given by my upperclassmen, " +
-                                  "so the chain never broke. I've also seen some of my freshmens become " +
+                                  "so the chain never broke. I've also seen some of my freshmen's become " +
                                   "an organizer later as well for this reason also.";
     public string P5_Outro => "Needless to say i also fancy music.";
 }

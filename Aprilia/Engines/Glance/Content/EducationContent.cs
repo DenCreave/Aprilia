@@ -27,7 +27,7 @@ public partial class EducationContent : ObservableObject, IGlanceContent
             Title = ".NET Backend Specialization",
             DateRange = "2025 - 2026",
             Description = "A comprehensive .NET backend specialization focused on enterprise architecture, completed by building and deploying a full-scale project from the ground up.",
-            AcquiredSkills = ["Clean Code", "Microservices", "CI/CD", "N-layered","Repository pattern","Pipeline pattern", "Azure", "Claim-Basd Auth (JWT/RBAC)", "Custom Middleware","Angular Fundamentals","Devops Fundamentals","Polyglot Persistance (SQL/NoSQL)"]
+            AcquiredSkills = ["Clean Code", "Microservices", "CI/CD", "N-layered","Repository pattern","Pipeline pattern", "Azure", "Claim-Based Auth (JWT/RBAC)", "Custom Middleware","Angular Fundamentals","Devops Fundamentals","Polyglot Persistence (SQL/NoSQL)"]
         },
         new TimelineItem
         {
