@@ -1,5 +1,6 @@
 using System;
 using Aprilia.Engines.Glance.Content;
+using Aprilia.Engines.Security;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -32,12 +33,15 @@ public partial class IntroPageView : UserControl
             // If the user cancels the download, do nothing
             if (file == null) return;
             
-            var resourceUri = new Uri("avares://Aprilia/Assets/Metia/Julius_Deer_CV.pdf");
-            using var assetStream = AssetLoader.Open(resourceUri);
+            //var resourceUri = new Uri("avares://Aprilia/Assets/Metia/cv");
+            //using var assetStream = AssetLoader.Open(resourceUri);
+            
+            // Decrypt the file on the fly and pipe it into the save location!
 
             // stream the data directly into the user's chosen download file
             await using var destinationStream = await file.OpenWriteAsync();
-            await assetStream.CopyToAsync(destinationStream);
+            await ImageDecryptor.DecryptFileToStreamAsync("Assets/Metia/cv", destinationStream);
+            //await assetStream.CopyToAsync(destinationStream);
         }
         catch (Exception ex)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Org.BouncyCastle.Crypto.Engines;
@@ -35,5 +36,29 @@ public static class ImageDecryptor
 
         using var decryptedStream = new MemoryStream(plainText, 0, len);
         return new Bitmap(decryptedStream);
+    }
+    public static async Task DecryptFileToStreamAsync(string resourcePath, Stream destinationStream)
+    {
+        var uri = new Uri($"avares://Aprilia/{resourcePath}");
+        using var encryptedStream = AssetLoader.Open(uri);
+
+        using var memoryStream = new MemoryStream();
+        await encryptedStream.CopyToAsync(memoryStream);
+        byte[] cipherText = memoryStream.ToArray();
+
+        // Your exact hardcoded keys!
+        var key = Convert.FromHexString("417072696C696121417072696C696121417072696C696121417072696C696121");
+        var iv = Convert.FromHexString("417072696C696121417072696C696121");
+        var parameters = new ParametersWithIV(new KeyParameter(key), iv);
+
+        var cipher = new PaddedBufferedBlockCipher(new CbcBlockCipher(new AesEngine()), new Pkcs7Padding());
+        cipher.Init(false, parameters);
+
+        byte[] plainText = new byte[cipher.GetOutputSize(cipherText.Length)];
+        int len = cipher.ProcessBytes(cipherText, 0, cipherText.Length, plainText, 0);
+        len += cipher.DoFinal(plainText, len);
+
+        // Write the decrypted bytes directly to the user's hard drive
+        await destinationStream.WriteAsync(plainText, 0, len);
     }
 }
